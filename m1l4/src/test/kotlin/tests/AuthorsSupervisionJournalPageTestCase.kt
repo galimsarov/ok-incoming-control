@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.incomingcontrol.m1l4.authorsSupervisionJournalPage
+package ru.otus.otuskotlin.incomingcontrol.m1l4.tests
 
 import org.junit.Test
 import ru.otus.otuskotlin.incomingcontrol.m1l4.authorsSupervisionJournalPage.dsl.buildAuthorsSupervisionJournalPage

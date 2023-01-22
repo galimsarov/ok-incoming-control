@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "ru.otus.otuskotlin.marketplace"
+group = "ru.otus.otuskotlin"
 version = "1.0-SNAPSHOT"
 
 allprojects {
