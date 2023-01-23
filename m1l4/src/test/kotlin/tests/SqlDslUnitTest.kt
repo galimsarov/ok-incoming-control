@@ -3,7 +3,6 @@ package ru.otus.otuskotlin.incomingcontrol.m1l4.tests
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.otus.otuskotlin.incomingcontrol.m1l4.sql.SqlSelectContext
-import ru.otus.otuskotlin.incomingcontrol.m1l4.sql.eq
 import ru.otus.otuskotlin.incomingcontrol.m1l4.sql.query
 import kotlin.test.assertFailsWith
 
@@ -83,16 +82,16 @@ class SqlDslUnitTest {
      */
     @Test
     fun `select with complex where condition with two conditions`() {
-//        val expected = "select * from table where col_a != 0"
-//
-//        val real = query {
-//            from("table")
-//            where {
-//                "col_a" nonEq 0
-//            }
-//        }
-//
-//        checkSQL(expected, real)
+        val expected = "select * from table where col_a != 0"
+
+        val real = query {
+            from("table")
+            where {
+                "col_a" nonEq 0
+            }
+        }
+
+        checkSQL(expected, real)
     }
 
     @Test

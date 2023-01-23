@@ -1,6 +1,10 @@
 package ru.otus.otuskotlin.incomingcontrol.m1l4.sql
 
-infix fun String.eq(param: String) = "$this ${if (param == "null") "is" else "="} '$param'"
+class WhereContext {
+    infix fun String.eq(param: Any?) = "$this ${if (param == null) "is" else "="} '$param'"
+
+    infix fun String.nonEq(param: Any?) = "$this ${if (param == null) "!is" else "!="} $param"
+}
 
 class SqlSelectContext {
     private var tableName: String = ""
@@ -18,8 +22,9 @@ class SqlSelectContext {
     }
 
     @SqlSelectDsl
-    fun where(block: () -> String) {
-        where = " where ${block.invoke()}"
+    fun where(block: WhereContext.() -> String) {
+        val blockResult = block.invoke(WhereContext())
+        where = " where $blockResult"
     }
 
     fun build(): String {
