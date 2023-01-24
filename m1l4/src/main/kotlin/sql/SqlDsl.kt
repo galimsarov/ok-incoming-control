@@ -1,9 +1,27 @@
 package ru.otus.otuskotlin.incomingcontrol.m1l4.sql
 
 class WhereContext {
-    infix fun String.eq(param: Any?) = "$this ${if (param == null) "is" else "="} '$param'"
+    private var hiddenWhere: MutableList<String> = mutableListOf()
 
-    infix fun String.nonEq(param: Any?) = "$this ${if (param == null) "!is" else "!="} $param"
+    val where: List<String>
+        get() = hiddenWhere.toList()
+
+    infix fun String.eq(param: Any?) {
+        hiddenWhere.add(
+            "$this ${if (param == null) "is" else "="} ${
+                if (param is String) "'$param'"
+                else "$param"
+            }"
+        )
+    }
+
+    infix fun String.nonEq(param: Any?) {
+        hiddenWhere.add("$this ${if (param == null) "!is" else "!="} $param")
+    }
+
+    fun or(block: () -> Unit) {
+        block.invoke()
+    }
 }
 
 class SqlSelectContext {
@@ -22,9 +40,12 @@ class SqlSelectContext {
     }
 
     @SqlSelectDsl
-    fun where(block: WhereContext.() -> String) {
-        val blockResult = block.invoke(WhereContext())
-        where = " where $blockResult"
+    fun where(block: WhereContext.() -> Unit) {
+        val ctx = WhereContext().apply(block)
+        where = " where ${
+            if (ctx.where.size == 1) ctx.where.joinToString("")
+            else ctx.where.joinToString(" or ", "(", ")")
+        }"
     }
 
     fun build(): String {
