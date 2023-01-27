@@ -9,7 +9,3 @@ dependencies {
 
     testImplementation(kotlin("test-junit"))
 }
-
-tasks.test {
-    useJUnitPlatform()
-}
