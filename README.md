@@ -1,2 +1,21 @@
-# ok-incoming-control
-Проект в рамках курса Otus Kotlin Backend Developer. Professional
+# Otus Kotlin Incoming control
+
+Учебный проект курса [Otus](https://otus.ru) [Kotlin Backend Developer](https://otus.ru/lessons/kotlin/).
+Поток курса 2022-12.
+
+Incoming control -- это справочник строительных материалов, а также информация о реально поступивших материалах на 
+строительный объект. Задача справочника -- дать информацию о том какие строительные материалы существуют в принципе, 
+а также о том какой конкретно материал прибыл на стройку (кем выпущен, кем подтверждено качество по итогам заводских 
+испытаний и т.д.).
+
+## Документация
+
+1. Маркетинг
+   1. [Заинтересанты](./docs/01-marketing/01-stakeholders.md)
+   2. [Целевая аудитория](./docs/01-marketing/02-target-audience.md)
+   3. [Конкурентный анализ](./docs/01-marketing/03-concurrency.md)
+   4. [Анализ экономики](./docs/01-marketing/04-economy.md)
+   5. [Пользовательские истории](./docs/01-marketing/05-user-stories.md)
+2. DevOps
+3. Тесты
+4. Архитектура
