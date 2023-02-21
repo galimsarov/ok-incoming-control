@@ -1,0 +1,413 @@
+openapi: 3.0.4
+info:
+  title: Incoming control
+  description: This is a reference book of building materials
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: commodity
+    description: Материал (строительный)
+paths:
+  /commodity/create:
+    post:
+      tags:
+        - commodity
+      summary: Create commodity
+      operationId: commodityCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommodityCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommodityCreateResponse'
+  /commodity/read:
+    post:
+      tags:
+        - commodity
+      summary: Read commodity
+      operationId: commodityRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommodityReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommodityReadResponse'
+  /commodity/update:
+    post:
+      tags:
+        - commodity
+      summary: Update commodity
+      operationId: commodityUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommodityUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommodityUpdateResponse'
+  /commodity/delete:
+    post:
+      tags:
+        - commodity
+      summary: Delete commodity
+      operationId: commodityDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommodityDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommodityDeleteResponse'
+  /commodity/search:
+    post:
+      tags:
+        - commodity
+      summary: Search commodity
+      operationId: commoditySearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommoditySearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommoditySearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дискриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/CommodityCreateRequest'
+          read:   '#/components/schemas/CommodityReadRequest'
+          update: '#/components/schemas/CommodityUpdateRequest'
+          delete: '#/components/schemas/CommodityDeleteRequest'
+          search: '#/components/schemas/CommoditySearchRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дискриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/CommodityCreateResponse'
+          read:   '#/components/schemas/CommodityReadResponse'
+          update: '#/components/schemas/CommodityUpdateResponse'
+          delete: '#/components/schemas/CommodityDeleteResponse'
+          search: '#/components/schemas/CommoditySearchResponse'
+          init: '#/components/schemas/CommodityInitResponse'
+
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    CommodityId:
+      type: string
+      description: Идентификатор материала
+    CommodityLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseCommodity:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        name:
+          type: string
+          description: Наименование материала
+        description:
+          type: string
+          description: Описание материала
+        receiptQuantity:
+          type: string
+          description: Количество поступившего материала
+        visibility:
+          $ref: '#/components/schemas/CommodityVisibility'
+
+    CommodityVisibility:
+      type: string
+      description: 'Тип видимости материала. Возможные значения: видит только владелец, только зарегистрированный в системе пользователь, видимо всем'
+      enum:
+        - ownerOnly
+        - registeredOnly
+        - public
+
+    CommodityInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    CommodityCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseCommodity'
+
+    CommodityCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/CommodityRequestDebug'
+        - type: object
+          properties:
+            commodity:
+              $ref: '#/components/schemas/CommodityCreateObject'
+
+    CommodityReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CommodityId'
+
+    CommodityReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/CommodityRequestDebug'
+        - type: object
+          properties:
+            commodity:
+              $ref: '#/components/schemas/CommodityReadObject'
+
+    CommodityUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseCommodity'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CommodityId'
+            lock:
+              $ref: '#/components/schemas/CommodityLock'
+
+    CommodityUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/CommodityRequestDebug'
+        - type: object
+          properties:
+            commodity:
+              $ref: '#/components/schemas/CommodityUpdateObject'
+
+    CommodityDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/CommodityId'
+            lock:
+              $ref: '#/components/schemas/CommodityLock'
+
+    CommodityDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/CommodityRequestDebug'
+        - type: object
+          properties:
+            commodity:
+              $ref: '#/components/schemas/CommodityDeleteObject'
+
+    CommoditySearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в материалах
+
+    CommoditySearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/CommodityRequestDebug'
+        - type: object
+          properties:
+            commodityFilter:
+              $ref: '#/components/schemas/CommoditySearchFilter'
+
+    CommodityResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseCommodity'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/CommodityId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/CommodityLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/CommodityPermissions'
+
+    CommodityPermissions:
+      type: string
+      description: Доступы для пользователя для операций над материалом
+      enum:
+        - read
+        - update
+        - delete
+        - makeVisiblePublic
+        - makeVisibleOwn
+        - makeVisibleGroup
+
+    CommodityResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом материала
+          properties:
+            commodity:
+              $ref: '#/components/schemas/CommodityResponseObject'
+
+    CommodityResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            commodities:
+              type: array
+              items:
+                $ref: '#/components/schemas/CommodityResponseObject'
+
+    CommodityCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/CommodityResponseSingle'
+
+    CommodityReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/CommodityResponseSingle'
+
+    CommodityUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/CommodityResponseSingle'
+
+    CommodityDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/CommodityResponseSingle'
+
+    CommoditySearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/CommodityResponseMulti'
+
+    # STUBS ======================
+
+    CommodityRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    CommodityRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/CommodityDebug'
+
+    CommodityDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/CommodityRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/CommodityRequestDebugStubs'
+
+    CommodityRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badName
+        - badDescription
+        - badVisibility
+        - cannotDelete
+        - badSearchString
