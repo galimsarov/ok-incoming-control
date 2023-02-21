@@ -18,4 +18,4 @@ pluginManagement {
 //include("m1l6")
 //include("m2l3")
 
-include("ok-marketplace-api-v1-jackson")
+include("api-v1-jackson")
