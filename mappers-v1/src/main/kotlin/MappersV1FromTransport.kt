@@ -75,6 +75,28 @@ fun IctrlContext.fromTransport(request: CommoditySearchRequest) {
     stubCase = request.debug.transportToStubCase()
 }
 
-private fun CommoditySearchFilter?.toInternal(): MkplAdFilter = MkplAdFilter(
+private fun CommoditySearchFilter?.toInternal(): IctrlCommodityFilter = IctrlCommodityFilter(
     searchString = this?.searchString ?: ""
 )
+
+private fun CommodityCreateObject.toInternal(): IctrlCommodity = IctrlCommodity(
+    name = this.name ?: "",
+    description = this.description ?: "",
+    receiptQuantity = this.receiptQuantity ?: "",
+    visibility = this.visibility.fromTransport(),
+)
+
+private fun CommodityUpdateObject.toInternal(): IctrlCommodity = IctrlCommodity(
+    id = this.id.toCommodityId(),
+    name = this.name ?: "",
+    description = this.description ?: "",
+    receiptQuantity = this.receiptQuantity ?: "",
+    visibility = this.visibility.fromTransport(),
+)
+
+private fun CommodityVisibility?.fromTransport(): IctrlVisibility = when (this) {
+    CommodityVisibility.PUBLIC -> IctrlVisibility.VISIBLE_PUBLIC
+    CommodityVisibility.OWNER_ONLY -> IctrlVisibility.VISIBLE_TO_OWNER
+    CommodityVisibility.REGISTERED_ONLY -> IctrlVisibility.VISIBLE_TO_GROUP
+    null -> IctrlVisibility.NONE
+}

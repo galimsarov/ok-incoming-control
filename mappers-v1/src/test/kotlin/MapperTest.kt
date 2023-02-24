@@ -1,5 +1,9 @@
+import models.IctrlVisibility
+import models.IctrlWorkMode
 import org.junit.Test
 import ru.otus.otuskotlin.api.v1.models.*
+import stubs.IctrlStubs
+import kotlin.test.assertEquals
 
 class MapperTest {
     @Test
@@ -19,12 +23,11 @@ class MapperTest {
         )
 
         val context = IctrlContext()
-//        context.fromTransport(req)
-//
-//        assertEquals(MkplStubs.SUCCESS, context.stubCase)
-//        assertEquals(MkplWorkMode.STUB, context.workMode)
-//        assertEquals("title", context.adRequest.title)
-//        assertEquals(MkplVisibility.VISIBLE_PUBLIC, context.adRequest.visibility)
-//        assertEquals(MkplDealSide.DEMAND, context.adRequest.adType)
+        context.fromTransport(req)
+
+        assertEquals(IctrlStubs.SUCCESS, context.stubCase)
+        assertEquals(IctrlWorkMode.STUB, context.workMode)
+        assertEquals("name", context.commodityRequest.name)
+        assertEquals(IctrlVisibility.VISIBLE_PUBLIC, context.commodityRequest.visibility)
     }
 }
