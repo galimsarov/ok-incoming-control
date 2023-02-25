@@ -13,7 +13,9 @@ class RequestSerializationTest {
         commodity = CommodityCreateObject(
             name = "commodity name",
             description = "commodity description",
+            manufacturer = "ABC Inc",
             receiptQuantity = "12",
+            commodityType = CommodityType.TUBE_LINE_PART,
             visibility = CommodityVisibility.PUBLIC
         )
     )

@@ -16,7 +16,9 @@ class MapperTest {
             commodity = CommodityCreateObject(
                 name = "name",
                 description = "desc",
+                manufacturer = "ABC Inc",
                 receiptQuantity = "12",
+                commodityType = CommodityType.TUBE_LINE_PART,
                 visibility = CommodityVisibility.PUBLIC,
             ),
         )
@@ -28,7 +30,9 @@ class MapperTest {
         assertEquals(IctrlWorkMode.STUB, context.workMode)
         assertEquals("name", context.commodityRequest.name)
         assertEquals("desc", context.commodityRequest.description)
+        assertEquals("ABC Inc", context.commodityRequest.manufacturer)
         assertEquals("12", context.commodityRequest.receiptQuantity)
+        assertEquals(IctrlCommodityType.TUBE_LINE_PART, context.commodityRequest.commodityType)
         assertEquals(IctrlVisibility.VISIBLE_PUBLIC, context.commodityRequest.visibility)
     }
 
@@ -40,7 +44,9 @@ class MapperTest {
             commodityResponse = IctrlCommodity(
                 name = "name",
                 description = "desc",
+                manufacturer = "ABC Inc",
                 receiptQuantity = "12",
+                commodityType = IctrlCommodityType.TUBE_LINE_PART,
                 visibility = IctrlVisibility.VISIBLE_PUBLIC,
             ),
             errors = mutableListOf(
@@ -59,8 +65,10 @@ class MapperTest {
         assertEquals("1234", req.requestId)
         assertEquals("name", req.commodity?.name)
         assertEquals("desc", req.commodity?.description)
-        assertEquals(CommodityVisibility.PUBLIC, req.commodity?.visibility)
+        assertEquals("ABC Inc", req.commodity?.manufacturer)
         assertEquals("12", req.commodity?.receiptQuantity)
+        assertEquals(CommodityType.TUBE_LINE_PART, req.commodity?.commodityType)
+        assertEquals(CommodityVisibility.PUBLIC, req.commodity?.visibility)
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)
         assertEquals("request", req.errors?.firstOrNull()?.group)

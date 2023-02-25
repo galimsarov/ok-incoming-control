@@ -182,7 +182,6 @@ components:
           search: '#/components/schemas/CommoditySearchResponse'
           init: '#/components/schemas/CommodityInitResponse'
 
-
     UserId:
       type: string
       description: Идентификатор пользователя
@@ -203,11 +202,24 @@ components:
         description:
           type: string
           description: Описание материала
+        manufacturer:
+          type: string
+          description: Производитель материала
         receiptQuantity:
           type: string
           description: Количество поступившего материала
+        commodityType:
+          $ref: '#/components/schemas/CommodityType'
         visibility:
           $ref: '#/components/schemas/CommodityVisibility'
+
+    CommodityType:
+      type: string
+      description: 'Тип материала (трубы, крепежи, ...)'
+      enum:
+        - tubeLinePart
+        - fastenerPart
+        - coatingMaterial
 
     CommodityVisibility:
       type: string

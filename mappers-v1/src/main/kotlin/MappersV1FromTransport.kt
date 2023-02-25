@@ -82,7 +82,9 @@ private fun CommoditySearchFilter?.toInternal(): IctrlCommodityFilter = IctrlCom
 private fun CommodityCreateObject.toInternal(): IctrlCommodity = IctrlCommodity(
     name = this.name ?: "",
     description = this.description ?: "",
+    manufacturer = this.manufacturer ?: "",
     receiptQuantity = this.receiptQuantity ?: "",
+    commodityType = this.commodityType.fromTransport(),
     visibility = this.visibility.fromTransport(),
 )
 
@@ -90,7 +92,9 @@ private fun CommodityUpdateObject.toInternal(): IctrlCommodity = IctrlCommodity(
     id = this.id.toCommodityId(),
     name = this.name ?: "",
     description = this.description ?: "",
+    manufacturer = this.manufacturer ?: "",
     receiptQuantity = this.receiptQuantity ?: "",
+    commodityType = this.commodityType.fromTransport(),
     visibility = this.visibility.fromTransport(),
 )
 
@@ -99,4 +103,11 @@ private fun CommodityVisibility?.fromTransport(): IctrlVisibility = when (this) 
     CommodityVisibility.OWNER_ONLY -> IctrlVisibility.VISIBLE_TO_OWNER
     CommodityVisibility.REGISTERED_ONLY -> IctrlVisibility.VISIBLE_TO_GROUP
     null -> IctrlVisibility.NONE
+}
+
+private fun CommodityType?.fromTransport(): IctrlCommodityType = when (this) {
+    CommodityType.TUBE_LINE_PART -> IctrlCommodityType.TUBE_LINE_PART
+    CommodityType.FASTENER_PART -> IctrlCommodityType.FASTENER_PART
+    CommodityType.COATING_MATERIAL -> IctrlCommodityType.COATING_MATERIAL
+    null -> IctrlCommodityType.NONE
 }

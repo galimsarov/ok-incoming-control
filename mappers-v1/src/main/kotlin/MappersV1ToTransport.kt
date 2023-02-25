@@ -55,8 +55,10 @@ private fun IctrlCommodity.toTransportCommodity(): CommodityResponseObject = Com
     id = id.takeIf { it != IctrlCommodityId.NONE }?.asString(),
     name = name.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },
+    manufacturer = manufacturer.takeIf { it.isNotBlank() },
     ownerId = ownerId.takeIf { it != IctrlUserId.NONE }?.asString(),
     receiptQuantity = receiptQuantity.takeIf { it.isNotBlank() },
+    commodityType = commodityType.toTransportCommodity(),
     visibility = visibility.toTransportCommodity(),
     permissions = permissionsClient.toTransportCommodity(),
 )
@@ -80,6 +82,13 @@ private fun IctrlVisibility.toTransportCommodity(): CommodityVisibility? = when 
     IctrlVisibility.VISIBLE_TO_GROUP -> CommodityVisibility.REGISTERED_ONLY
     IctrlVisibility.VISIBLE_TO_OWNER -> CommodityVisibility.OWNER_ONLY
     IctrlVisibility.NONE -> null
+}
+
+private fun IctrlCommodityType.toTransportCommodity(): CommodityType? = when (this) {
+    IctrlCommodityType.TUBE_LINE_PART -> CommodityType.TUBE_LINE_PART
+    IctrlCommodityType.FASTENER_PART -> CommodityType.FASTENER_PART
+    IctrlCommodityType.COATING_MATERIAL -> CommodityType.COATING_MATERIAL
+    IctrlCommodityType.NONE -> null
 }
 
 private fun List<IctrlError>.toTransportErrors(): List<Error>? = this

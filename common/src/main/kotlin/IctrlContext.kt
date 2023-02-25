@@ -5,7 +5,7 @@ import stubs.IctrlStubs
 data class IctrlContext(
     var command: IctrlCommand = IctrlCommand.NONE,
     var state: IctrlState = IctrlState.NONE,
-    val errors: MutableList<IctrlError> = mutableListOf(),
+    var errors: MutableList<IctrlError> = mutableListOf(),
 
     var workMode: IctrlWorkMode = IctrlWorkMode.PROD,
     var stubCase: IctrlStubs = IctrlStubs.NONE,
