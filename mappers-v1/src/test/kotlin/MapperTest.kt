@@ -26,8 +26,10 @@ class MapperTest {
         val context = IctrlContext()
         context.fromTransport(req)
 
-        assertEquals(IctrlStubs.SUCCESS, context.stubCase)
+        assertEquals("1234", context.requestId.asString())
+        assertEquals(IctrlCommand.CREATE, context.command)
         assertEquals(IctrlWorkMode.STUB, context.workMode)
+        assertEquals(IctrlStubs.SUCCESS, context.stubCase)
         assertEquals("name", context.commodityRequest.name)
         assertEquals("desc", context.commodityRequest.description)
         assertEquals("ABC Inc", context.commodityRequest.manufacturer)
@@ -74,5 +76,6 @@ class MapperTest {
         assertEquals("request", req.errors?.firstOrNull()?.group)
         assertEquals("name", req.errors?.firstOrNull()?.field)
         assertEquals("wrong name", req.errors?.firstOrNull()?.message)
+        assertEquals(ResponseResult.SUCCESS, req.result)
     }
 }

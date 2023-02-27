@@ -24,10 +24,17 @@ class RequestSerializationTest {
     fun serialize() {
         val json = apiV1Mapper.writeValueAsString(request)
 
-        assertContains(json, Regex("\"name\":\\s*\"commodity name\""))
+        assertContains(json, Regex("\"requestId\":\\s*\"123\""))
+        assertContains(json, Regex("\"requestType\":\\s*\"create\""))
         assertContains(json, Regex("\"mode\":\\s*\"stub\""))
         assertContains(json, Regex("\"stub\":\\s*\"badName\""))
-        assertContains(json, Regex("\"requestType\":\\s*\"create\""))
+        assertContains(json, Regex("\"name\":\\s*\"commodity name\""))
+        assertContains(json, Regex("\"description\":\\s*\"commodity description\""))
+        assertContains(json, Regex("\"manufacturer\":\\s*\"ABC Inc\""))
+        assertContains(json, Regex("\"receiptQuantity\":\\s*\"12\""))
+        assertContains(json, Regex("\"commodityType\":\\s*\"tubeLinePart\""))
+        assertContains(json, Regex("\"visibility\":\\s*\"public\""))
+
     }
 
     @Test
