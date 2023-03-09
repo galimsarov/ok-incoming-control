@@ -22,3 +22,5 @@ include("api-v1-jackson")
 
 include("common")
 include("mappers-v1")
+
+include("stubs")
