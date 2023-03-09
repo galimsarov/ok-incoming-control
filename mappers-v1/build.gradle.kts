@@ -1,5 +1,3 @@
-val datetimeVersion: String by project
-
 plugins {
     kotlin("jvm")
 }
