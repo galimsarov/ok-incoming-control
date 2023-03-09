@@ -17,4 +17,4 @@ springdoc:
   swagger-ui:
     urls:
       - name: v1
-        url: specs-ad-v1.yaml
+        url: specs-commodity-v1.yaml
