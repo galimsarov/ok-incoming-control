@@ -30,28 +30,28 @@ class CommodityControllerTest {
     )
 
     @Test
-    fun readAd() = testStubCommodity(
+    fun readCommodity() = testStubCommodity(
         "/v1/commodity/read",
         CommodityReadRequest(),
         IctrlContext().apply { commodityResponse = IctrlCommodityStub.get() }.toTransportRead()
     )
 
     @Test
-    fun updateAd() = testStubCommodity(
+    fun updateCommodity() = testStubCommodity(
         "/v1/commodity/update",
         CommodityUpdateRequest(),
         IctrlContext().apply { commodityResponse = IctrlCommodityStub.get() }.toTransportUpdate()
     )
 
     @Test
-    fun deleteAd() = testStubCommodity(
+    fun deleteCommodity() = testStubCommodity(
         "/v1/commodity/delete",
         CommodityDeleteRequest(),
         IctrlContext().toTransportDelete()
     )
 
     @Test
-    fun searchAd() = testStubCommodity(
+    fun searchCommodity() = testStubCommodity(
         "/v1/commodity/search",
         CommoditySearchRequest(),
         IctrlContext().apply { commoditiesResponse.add(IctrlCommodityStub.get()) }.toTransportSearch()
