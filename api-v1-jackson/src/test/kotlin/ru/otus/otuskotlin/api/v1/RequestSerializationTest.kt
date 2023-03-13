@@ -1,3 +1,5 @@
+package ru.otus.otuskotlin.api.v1
+
 import ru.otus.otuskotlin.api.v1.models.*
 import kotlin.test.Test
 import kotlin.test.assertContains

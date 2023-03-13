@@ -1,3 +1,5 @@
+package ru.otus.otuskotlin.api.v1
+
 import com.fasterxml.jackson.databind.ObjectMapper
 
 val apiV1Mapper = ObjectMapper().apply {
