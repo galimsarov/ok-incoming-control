@@ -53,12 +53,8 @@ dependencies {
     implementation(project(":stubs"))
 
     // tests
-    implementation(kotlin("test-junit"))
+    testImplementation(kotlin("test-junit"))
     implementation(ktor("test-host")) // "io.ktor:ktor-server-test-host:$ktorVersion"
     implementation(ktor("content-negotiation", prefix = "client-"))
     implementation(ktor("websockets", prefix = "client-"))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
