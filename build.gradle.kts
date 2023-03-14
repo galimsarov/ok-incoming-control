@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "ru.otus.otuskotlin"
+group = "ru.otus.otuskotlin.incomingControl"
 version = "1.0-SNAPSHOT"
 
 allprojects {
