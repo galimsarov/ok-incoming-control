@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Route.v1Commodity() {
-    route("ad") {
+    route("commodity") {
         post("create") {
             call.createCommodity()
         }
