@@ -3,10 +3,10 @@ package ru.otus.otuskotlin.incomingControl.v1
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import ru.otus.otuskotlin.api.v1.models.*
-import ru.otus.otuskotlin.common.IctrlContext
-import ru.otus.otuskotlin.mappers.v1.*
-import ru.otus.otuskotlin.stubs.IctrlCommodityStub
+import ru.otus.otuskotlin.incomingControl.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.common.IctrlContext
+import ru.otus.otuskotlin.incomingControl.mappers.v1.*
+import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
 
 suspend fun ApplicationCall.createCommodity() {
     val request = receive<CommodityCreateRequest>()

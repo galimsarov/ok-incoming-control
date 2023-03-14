@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.testing.*
 import org.junit.Test
-import ru.otus.otuskotlin.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.api.v1.models.*
 import kotlin.test.assertEquals
 
 class V1CommodityStubApiTest {

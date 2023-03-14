@@ -15,7 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
-import ru.otus.otuskotlin.api.v1.apiV1Mapper
+import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.incomingControl.v1.v1Commodity
 
 fun main(args: Array<String>): Unit = main(args)
