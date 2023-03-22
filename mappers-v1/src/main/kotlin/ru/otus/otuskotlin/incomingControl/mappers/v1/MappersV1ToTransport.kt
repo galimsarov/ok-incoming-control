@@ -54,6 +54,12 @@ fun List<IctrlCommodity>.toTransportCommodity(): List<CommodityResponseObject>? 
     .toList()
     .takeIf { it.isNotEmpty() }
 
+fun IctrlContext.toTransportInit() = CommodityInitResponse(
+    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
+    result = if (errors.isEmpty()) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    errors = errors.toTransportErrors(),
+)
+
 private fun IctrlCommodity.toTransportCommodity(): CommodityResponseObject = CommodityResponseObject(
     id = id.takeIf { it != IctrlCommodityId.NONE }?.asString(),
     name = name.takeIf { it.isNotBlank() },

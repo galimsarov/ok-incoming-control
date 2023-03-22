@@ -17,6 +17,7 @@ import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.incomingControl.v1.v1Commodity
+import ru.otus.otuskotlin.incomingControl.v1.wsHandlerV1
 
 fun main(args: Array<String>): Unit = main(args)
 
@@ -54,6 +55,10 @@ fun Application.module() {
 
         route("v1") {
             v1Commodity()
+        }
+
+        webSocket("/ws/v1") {
+            wsHandlerV1()
         }
     }
 }
