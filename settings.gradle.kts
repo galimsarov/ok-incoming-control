@@ -28,3 +28,4 @@ include("mappers-v1")
 
 include("stubs")
 include("app-ktor")
+include("lib-cor")
