@@ -2,6 +2,7 @@ package ru.otus.otuskotlin.incomingControl.cor
 
 import ru.otus.otuskotlin.incomingControl.cor.handlers.CorChainDsl
 import ru.otus.otuskotlin.incomingControl.cor.handlers.CorWorkerDsl
+import ru.otus.otuskotlin.incomingControl.cor.handlers.executeParallel
 
 /**
  * Базовый билдер (dsl)
@@ -60,4 +61,34 @@ fun <T> rootChain(function: ICorChainDsl<T>.() -> Unit): ICorChainDsl<T> = CorCh
  */
 fun <T> ICorChainDsl<T>.worker(function: ICorWorkerDsl<T>.() -> Unit) {
     add(CorWorkerDsl<T>().apply(function))
+}
+
+/**
+ * Создает рабочего с on и except по умолчанию
+ */
+fun <T> ICorChainDsl<T>.worker(
+    title: String,
+    description: String = "",
+    blockHandle: T.() -> Unit
+) {
+    add(CorWorkerDsl<T>().also {
+        it.title = title
+        it.description = description
+        it.handle(blockHandle)
+    })
+}
+
+/**
+ * Создает цепочку, элементы которой исполняются последовательно.
+ */
+fun <T> ICorChainDsl<T>.chain(function: ICorChainDsl<T>.() -> Unit) {
+    add(CorChainDsl<T>().apply(function))
+}
+
+/**
+ * Создает цепочку, элементы которой исполняются параллельно. Будьте аккуратны с доступом к контексту -
+ * при необходимости используйте синхронизацию
+ */
+fun <T> ICorChainDsl<T>.parallel(function: ICorChainDsl<T>.() -> Unit) {
+    add(CorChainDsl<T>(::executeParallel).apply(function))
 }

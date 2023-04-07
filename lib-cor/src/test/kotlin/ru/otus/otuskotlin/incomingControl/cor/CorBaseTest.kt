@@ -7,6 +7,7 @@ import ru.otus.otuskotlin.incomingControl.cor.handlers.CorChain
 import ru.otus.otuskotlin.incomingControl.cor.handlers.CorWorker
 import ru.otus.otuskotlin.incomingControl.cor.handlers.executeSequential
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CorBaseTest {
@@ -82,99 +83,93 @@ class CorBaseTest {
                 }
             ).history)
     }
-}
 
-
-/*
-@Test
-@JsName("on_should_check_condition")
-fun `on should check condition`() = runTest {
-    assertEquals("w2; w3; ", execute(rootChain {
-        worker {
-            on { status == CorStatuses.ERROR }
-            handle { history += "w1; " }
-        }
-        worker {
-            on { status == CorStatuses.NONE }
-            handle {
-                history += "w2; "
-                status = CorStatuses.FAILING
+    @Test
+    fun `on should check condition`() = runTest {
+        assertEquals("w2; w3; ", execute(rootChain {
+            worker {
+                on { status == CorStatuses.ERROR }
+                handle { history += "w1; " }
             }
-        }
-        worker {
-            on { status == CorStatuses.FAILING }
-            handle { history += "w3; " }
-        }
-    }).history)
-}
+            worker {
+                on { status == CorStatuses.NONE }
+                handle {
+                    history += "w2; "
+                    status = CorStatuses.FAILING
+                }
+            }
+            worker {
+                on { status == CorStatuses.FAILING }
+                handle { history += "w3; " }
+            }
+        }).history)
+    }
 
-@Test
-@JsName("except_should_execute_when_exception")
-fun `except should execute when exception`() = runTest {
-    assertEquals("some error", execute(rootChain {
-        worker {
-            handle { throw RuntimeException("some error") }
-            except { history += it.message }
-        }
-    }).history)
-}
+    @Test
+    fun `except should execute when exception`() = runTest {
+        assertEquals("some error", execute(rootChain {
+            worker {
+                handle { throw RuntimeException("some error") }
+                except { history += it.message }
+            }
+        }).history)
+    }
 
-@Test
-@JsName("should_throw_when_exception_and_no_except")
-fun `should throw when exception and no except`() = runTest {
-    assertFails {
-        execute(rootChain {
-            worker("throw") { throw RuntimeException("some error") }
-        })
+    @Test
+    fun `should throw when exception and no except`() = runTest {
+        assertFails {
+            execute(rootChain {
+                worker("throw") { throw RuntimeException("some error") }
+            })
+        }
+    }
+
+    @Test
+    fun `complex chain example`() = runTest {
+        val chain = rootChain<TestContext> {
+            worker {
+                title = "Инициализация статуса"
+                description = "При старте обработки цепочки, статус еще не установлен. Проверяем его"
+
+                on { status == CorStatuses.NONE }
+                handle { status = CorStatuses.RUNNING }
+                except { status = CorStatuses.ERROR }
+            }
+
+            chain {
+                on { status == CorStatuses.RUNNING }
+
+                worker(
+                    title = "Лямбда обработчик",
+                    description = "Пример использования обработчика в виде лямбды"
+                ) {
+                    some += 4
+                }
+            }
+
+            parallel {
+                on {
+                    some < 15
+                }
+
+                worker(title = "Increment some") {
+                    some++
+                }
+            }
+
+            printResult()
+
+        }.build()
+
+        val ctx = TestContext()
+        chain.exec(ctx)
+        println("Complete: $ctx")
+    }
+
+    private fun ICorChainDsl<TestContext>.printResult() = worker(title = "Print example") {
+        println("some = $some")
     }
 }
-*/
-/*
-@Test
-fun `complex chain example`() = runTest {
-    val chain = rootChain<TestContext> {
-        worker {
-            title = "Инициализация статуса"
-            description = "При старте обработки цепочки, статус еще не установлен. Проверяем его"
-
-            on { status == CorStatuses.NONE }
-            handle { status = CorStatuses.RUNNING }
-            except { status = CorStatuses.ERROR }
-        }
-
-        chain {
-            on { status == CorStatuses.RUNNING }
-
-            worker(
-                title = "Лямбда обработчик",
-                description = "Пример использования обработчика в виде лямбды"
-            ) {
-                some += 4
-            }
-        }
-
-        parallel {
-            on {
-                some < 15
-            }
-
-            worker(title = "Increment some") {
-                some++
-            }
-        }
-
-        printResult()
-
-    }.build()
-
-    val ctx = TestContext()
-    chain.exec(ctx)
-    println("Complete: $ctx")
-}*/
-/*
-private fun ICorChainDsl<TestContext>.printResult() = worker(title = "Print example") {
-    println("some = $some")
-}*/
 
 data class TestContext(
     var status: CorStatuses = CorStatuses.NONE,
