@@ -49,7 +49,7 @@ class CorChainDsl<T>(
     }
 
     override fun build(): ICorExec<T> = CorChain(
-        title = title,
+        title = name,
         description = description,
         execs = workers.map { it.build() },
         handler = handler,

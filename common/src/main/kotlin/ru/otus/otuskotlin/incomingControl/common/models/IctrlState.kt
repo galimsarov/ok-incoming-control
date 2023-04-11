@@ -4,4 +4,5 @@ enum class IctrlState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }
