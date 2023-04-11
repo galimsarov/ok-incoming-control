@@ -17,8 +17,6 @@ application {
 }
 
 dependencies {
-    val kotestVersion: String by project
-
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
 
@@ -50,7 +48,8 @@ dependencies {
     implementation(project(":mappers-v1"))
 
     // Stubs
-    implementation(project(":stubs"))
+    // implementation(project(":stubs"))
+    implementation(project(":biz"))
 
     // tests
     testImplementation(kotlin("test-junit"))
