@@ -14,8 +14,8 @@ class CorBaseTest {
     @Test
     fun `worker should execute handle`() = runTest {
         val worker = CorWorker<TestContext>(
-            name = "w1",
-            blockHandle = { history += "w1; " }
+                title = "w1",
+                blockHandle = { history += "w1; " }
         )
         val ctx = TestContext()
         worker.exec(ctx)
@@ -25,9 +25,9 @@ class CorBaseTest {
     @Test
     fun `worker should not execute when off`() = runTest {
         val worker = CorWorker<TestContext>(
-            name = "w1",
-            blockOn = { status == CorStatuses.ERROR },
-            blockHandle = { history += "w1; " }
+                title = "w1",
+                blockOn = { status == CorStatuses.ERROR },
+                blockHandle = { history += "w1; " }
         )
         val ctx = TestContext()
         worker.exec(ctx)
@@ -37,9 +37,9 @@ class CorBaseTest {
     @Test
     fun `worker should handle exception`() = runTest {
         val worker = CorWorker<TestContext>(
-            name = "w1",
-            blockHandle = { throw RuntimeException("some error") },
-            blockExcept = { e -> history += e.message }
+                title = "w1",
+                blockHandle = { throw RuntimeException("some error") },
+                blockExcept = { e -> history += e.message }
         )
         val ctx = TestContext()
         worker.exec(ctx)
@@ -50,9 +50,9 @@ class CorBaseTest {
     fun `chain should execute workers`() = runTest {
         val createWorker = { title: String ->
             CorWorker<TestContext>(
-                name = title,
-                blockOn = { status == CorStatuses.NONE },
-                blockHandle = { history += "$title; " }
+                    title = title,
+                    blockOn = { status == CorStatuses.NONE },
+                    blockHandle = { history += "$title; " }
             )
         }
         val chain = CorChain(
@@ -128,7 +128,7 @@ class CorBaseTest {
     fun `complex chain example`() = runTest {
         val chain = rootChain<TestContext> {
             worker {
-                name = "Инициализация статуса"
+                title = "Инициализация статуса"
                 description = "При старте обработки цепочки, статус еще не установлен. Проверяем его"
 
                 on { status == CorStatuses.NONE }

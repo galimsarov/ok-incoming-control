@@ -5,12 +5,12 @@ import ru.otus.otuskotlin.incomingControl.cor.ICorExec
 import ru.otus.otuskotlin.incomingControl.cor.ICorWorkerDsl
 
 class CorWorker<T>(
-    name: String,
-    description: String = "",
-    blockOn: suspend T.() -> Boolean = { true },
-    private val blockHandle: suspend T.() -> Unit = {},
-    blockExcept: suspend T.(Throwable) -> Unit = {},
-) : AbstractCorExec<T>(name, description, blockOn, blockExcept) {
+        title: String,
+        description: String = "",
+        blockOn: suspend T.() -> Boolean = { true },
+        private val blockHandle: suspend T.() -> Unit = {},
+        blockExcept: suspend T.(Throwable) -> Unit = {},
+) : AbstractCorExec<T>(title, description, blockOn, blockExcept) {
     override suspend fun handle(context: T) = blockHandle(context)
 }
 
@@ -22,10 +22,10 @@ class CorWorkerDsl<T> : CorExecDsl<T>(), ICorWorkerDsl<T> {
     }
 
     override fun build(): ICorExec<T> = CorWorker(
-        name = name,
-        description = description,
-        blockOn = blockOn,
-        blockHandle = blockHandle,
-        blockExcept = blockExcept
+            title = title,
+            description = description,
+            blockOn = blockOn,
+            blockHandle = blockHandle,
+            blockExcept = blockExcept
     )
 }

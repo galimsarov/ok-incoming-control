@@ -7,9 +7,9 @@ import ru.otus.otuskotlin.incomingControl.cor.ICorChainDsl
 import ru.otus.otuskotlin.incomingControl.cor.chain
 
 fun ICorChainDsl<IctrlContext>.operation(
-    name: String, command: IctrlCommand, block: ICorChainDsl<IctrlContext>.() -> Unit
+        title: String, command: IctrlCommand, block: ICorChainDsl<IctrlContext>.() -> Unit
 ) = chain {
     block()
-    this.name = name
+    this.title = title
     on { this.command == command && state == IctrlState.RUNNING }
 }

@@ -6,8 +6,8 @@ import ru.otus.otuskotlin.incomingControl.common.models.IctrlWorkMode
 import ru.otus.otuskotlin.incomingControl.cor.ICorChainDsl
 import ru.otus.otuskotlin.incomingControl.cor.chain
 
-fun ICorChainDsl<IctrlContext>.stubs(name: String, block: ICorChainDsl<IctrlContext>.() -> Unit) = chain {
+fun ICorChainDsl<IctrlContext>.stubs(title: String, block: ICorChainDsl<IctrlContext>.() -> Unit) = chain {
     block()
-    this.name = name
+    this.title = title
     on { workMode == IctrlWorkMode.STUB && state == IctrlState.RUNNING }
 }

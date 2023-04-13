@@ -9,7 +9,7 @@ import ru.otus.otuskotlin.incomingControl.cor.handlers.executeParallel
  */
 @CorDslMarker
 interface ICorExecDsl<T> {
-    var name: String
+    var title: String
     var description: String
     fun on(function: suspend T.() -> Boolean)
     fun except(function: suspend T.(e: Throwable) -> Unit)
@@ -72,7 +72,7 @@ fun <T> ICorChainDsl<T>.worker(
     blockHandle: T.() -> Unit
 ) {
     add(CorWorkerDsl<T>().also {
-        it.name = title
+        it.title = title
         it.description = description
         it.handle(blockHandle)
     })

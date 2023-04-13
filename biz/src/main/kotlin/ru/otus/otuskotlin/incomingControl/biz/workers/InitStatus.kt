@@ -6,7 +6,7 @@ import ru.otus.otuskotlin.incomingControl.cor.ICorChainDsl
 import ru.otus.otuskotlin.incomingControl.cor.worker
 
 fun ICorChainDsl<IctrlContext>.initStatus(title: String) = worker {
-    this.name = title
+    this.title = title
     on { state == IctrlState.NONE }
     handle { state = IctrlState.RUNNING }
 }

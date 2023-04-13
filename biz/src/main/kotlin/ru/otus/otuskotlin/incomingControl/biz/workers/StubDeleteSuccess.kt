@@ -7,13 +7,13 @@ import ru.otus.otuskotlin.incomingControl.cor.ICorChainDsl
 import ru.otus.otuskotlin.incomingControl.cor.worker
 import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
 
-fun ICorChainDsl<IctrlContext>.stubDeleteSuccess(name: String) = worker {
-    this.name = name
+fun ICorChainDsl<IctrlContext>.stubDeleteSuccess(title: String) = worker {
+    this.title = title
     on { stubCase == IctrlStubs.SUCCESS && state == IctrlState.RUNNING }
     handle {
         state = IctrlState.FINISHING
         val stub = IctrlCommodityStub.prepareResult {
-            commodityRequest.name.takeIf { it.isNotBlank() }?.also { this.name = name }
+            commodityRequest.name.takeIf { it.isNotBlank() }?.also { this.name = it }
         }
         commodityResponse = stub
     }
