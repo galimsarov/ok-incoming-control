@@ -34,6 +34,7 @@ class IctrlCommodityProcessor {
                     validateNameNotEmpty("Проверка, что наименование не пустое")
                     validateNameHasContent("Проверка символов")
                     validateDescriptionNotEmpty("Проверка, что описание не пусто")
+                    validateDescriptionHasContent("Проверка символов")
 
                     finishCommodityValidation("Завершение проверок")
                 }
@@ -65,13 +66,17 @@ class IctrlCommodityProcessor {
                 }
                 validation {
                     worker("Копируем поля в commodityValidating") { commodityValidating = commodityRequest.deepCopy() }
-                    worker("Очистка id") { commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim()) }
+                    worker("Очистка id") {
+                        commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim())
+                    }
                     worker("Очистка наименования") { commodityValidating.name = commodityValidating.name.trim() }
-                    worker("Очистка описания") { commodityValidating.description = commodityValidating.description.trim() }
+                    worker("Очистка описания") {
+                        commodityValidating.description = commodityValidating.description.trim()
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
-                    validateNameNotEmpty("Проверка на непустой заголовок")
-                    validateNameHasContent("Проверка на наличие содержания в заголовке")
+                    validateNameNotEmpty("Проверка на непустое наименование")
+                    validateNameHasContent("Проверка на наличие содержания в наименовании")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
                     validateDescriptionHasContent("Проверка на наличие содержания в описании")
 
