@@ -10,16 +10,16 @@ class BizValidationCreateTest {
     private val processor by lazy { IctrlCommodityProcessor() }
 
     @Test
-    fun correctTitle() = validationNameCorrect(command, processor)
+    fun correctName() = validationNameCorrect(command, processor)
 
     @Test
-    fun trimTitle() = validationNameTrim(command, processor)
+    fun trimName() = validationNameTrim(command, processor)
 
     @Test
-    fun emptyTitle() = validationNameEmpty(command, processor)
+    fun emptyName() = validationNameEmpty(command, processor)
 
     @Test
-    fun badSymbolsTitle() = validationNameSymbols(command, processor)
+    fun badSymbolsName() = validationNameSymbols(command, processor)
 
     @Test
     fun correctDescription() = validationDescriptionCorrect(command, processor)
@@ -32,4 +32,16 @@ class BizValidationCreateTest {
 
     @Test
     fun badSymbolsDescription() = validationDescriptionSymbols(command, processor)
+
+    @Test
+    fun correctManufacturer() = validationManufacturerCorrect(command, processor)
+
+    @Test
+    fun trimManufacturer() = validationManufacturerTrim(command, processor)
+
+    @Test
+    fun emptyManufacturer() = validationManufacturerEmpty(command, processor)
+
+    @Test
+    fun badSymbolsManufacturer() = validationManufacturerSymbols(command, processor)
 }

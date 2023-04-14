@@ -30,11 +30,23 @@ class IctrlCommodityProcessor {
                     worker("Копируем поля в commodityValidating") { commodityValidating = commodityRequest.deepCopy() }
                     worker("Очистка id") { commodityValidating.id = IctrlCommodityId.NONE }
                     worker("Очистка наименования") { commodityValidating.name = commodityValidating.name.trim() }
-                    worker("Очистка описания") { commodityValidating.description = commodityValidating.description.trim() }
+                    worker("Очистка описания") {
+                        commodityValidating.description = commodityValidating.description.trim()
+                    }
+                    worker("Очистка наименования производителя") {
+                        commodityValidating.manufacturer = commodityValidating.manufacturer.trim()
+                    }
+                    worker("Очистка количества") {
+                        commodityValidating.receiptQuantity = commodityValidating.receiptQuantity.trim()
+                    }
                     validateNameNotEmpty("Проверка, что наименование не пустое")
                     validateNameHasContent("Проверка символов")
                     validateDescriptionNotEmpty("Проверка, что описание не пусто")
                     validateDescriptionHasContent("Проверка символов")
+                    validateManufacturerNotEmpty("Проверка, что наименование производителя не пустое")
+                    validateManufacturerHasContent("Проверка символов")
+                    validateQuantityNotEmpty("Проверка, что количество не пустое")
+                    validateQuantityHasContent("Проверка цифр")
 
                     finishCommodityValidation("Завершение проверок")
                 }
