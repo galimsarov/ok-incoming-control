@@ -85,12 +85,22 @@ class IctrlCommodityProcessor {
                     worker("Очистка описания") {
                         commodityValidating.description = commodityValidating.description.trim()
                     }
+                    worker("Очистка наименования производителя") {
+                        commodityValidating.manufacturer = commodityValidating.manufacturer.trim()
+                    }
+                    worker("Очистка количества") {
+                        commodityValidating.receiptQuantity = commodityValidating.receiptQuantity.trim()
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
                     validateNameNotEmpty("Проверка на непустое наименование")
                     validateNameHasContent("Проверка на наличие содержания в наименовании")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
                     validateDescriptionHasContent("Проверка на наличие содержания в описании")
+                    validateManufacturerNotEmpty("Проверка, что наименование производителя не пустое")
+                    validateManufacturerHasContent("Проверка символов")
+                    validateQuantityNotEmpty("Проверка, что количество не пустое")
+                    validateQuantityHasContent("Проверка цифр")
 
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }

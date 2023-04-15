@@ -3,21 +3,22 @@ package ru.otus.otuskotlin.incomingControl.biz
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
 import kotlin.test.Test
 
-class BizValidationCreateTest {
-    private val command = IctrlCommand.CREATE
+class BizValidationUpdateTest {
+
+    private val command = IctrlCommand.UPDATE
     private val processor by lazy { IctrlCommodityProcessor() }
 
     @Test
     fun correctName() = validationNameCorrect(command, processor)
 
     @Test
-    fun trimName() = validationNameTrim(command, processor)
+    fun trimTitle() = validationNameTrim(command, processor)
 
     @Test
     fun emptyName() = validationNameEmpty(command, processor)
 
     @Test
-    fun badSymbolsName() = validationNameSymbols(command, processor)
+    fun badSymbolsTitle() = validationNameSymbols(command, processor)
 
     @Test
     fun correctDescription() = validationDescriptionCorrect(command, processor)
@@ -54,4 +55,17 @@ class BizValidationCreateTest {
 
     @Test
     fun badSymbolsQuantity() = validationQuantitySymbols(command, processor)
+
+    @Test
+    fun correctId() = validationIdCorrect(command, processor)
+
+    @Test
+    fun trimId() = validationIdTrim(command, processor)
+
+    @Test
+    fun emptyId() = validationIdEmpty(command, processor)
+
+    @Test
+    fun badFormatId() = validationIdFormat(command, processor)
+
 }
