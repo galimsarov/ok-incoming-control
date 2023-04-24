@@ -15,7 +15,7 @@ import ru.otus.otuskotlin.incomingControl.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.incomingControl.mappers.v1.fromTransport
 import ru.otus.otuskotlin.incomingControl.mappers.v1.toTransportCommodity
 import ru.otus.otuskotlin.incomingControl.mappers.v1.toTransportInit
-import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
+import ru.otus.otuskotlin.incomingControl.process
 import java.util.*
 
 private val sessions: MutableSet<WebSocketSession> = Collections.synchronizedSet(LinkedHashSet())
@@ -39,7 +39,7 @@ suspend fun WebSocketSession.wsHandlerV1() {
         try {
             val request = apiV1Mapper.readValue<IRequest>(jsonStr)
             context.fromTransport(request)
-            context.commodityResponse = IctrlCommodityStub.get()
+            process(ctx)
 
             val result = apiV1Mapper.writeValueAsString(context.toTransportCommodity())
 

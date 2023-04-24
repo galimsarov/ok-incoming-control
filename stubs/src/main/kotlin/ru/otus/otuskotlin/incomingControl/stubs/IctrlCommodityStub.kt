@@ -16,6 +16,8 @@ object IctrlCommodityStub {
         ictrlCommodity("d-666-06", filter),
     )
 
+    fun prepareResult(block: IctrlCommodity.() -> Unit): IctrlCommodity = get().apply(block)
+
     private fun ictrlCommodity(id: String, filter: String) = COMMODITY_BOLT.copy(
         id = IctrlCommodityId(id),
         name = "$filter $id",
