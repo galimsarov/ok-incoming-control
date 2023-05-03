@@ -24,18 +24,35 @@ fun IctrlContext.fail(error: IctrlError) {
 }
 
 fun errorValidation(
-        field: String,
-        /**
+    field: String,
+    /**
          * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
          * Например: empty, badSymbols, tooLong, etc
          */
-        violationCode: String,
-        description: String,
-        level: IctrlError.Level = IctrlError.Level.ERROR,
+    violationCode: String,
+    description: String,
+    level: IctrlError.Level = IctrlError.Level.ERROR,
 ) = IctrlError(
-        code = "validation-$field-$violationCode",
-        field = field,
-        group = "validation",
-        message = "Validation error for field $field: $description",
-        level = level,
+    code = "validation-$field-$violationCode",
+    field = field,
+    group = "validation",
+    message = "Validation error for field $field: $description",
+    level = level,
+)
+
+fun errorAdministration(
+    /**
+     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
+     * Например: empty, badSymbols, tooLong, etc
+     */
+    field: String = "",
+    violationCode: String,
+    description: String,
+    level: IctrlError.Level = IctrlError.Level.ERROR,
+) = IctrlError(
+    field = field,
+    code = "administration-$violationCode",
+    group = "administration",
+    message = "Microservice management error: $description",
+    level = level,
 )

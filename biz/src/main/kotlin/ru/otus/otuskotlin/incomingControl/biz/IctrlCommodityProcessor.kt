@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.incomingControl.biz
 
+import ru.otus.otuskotlin.incomingControl.biz.general.initRepo
 import ru.otus.otuskotlin.incomingControl.biz.groups.operation
 import ru.otus.otuskotlin.incomingControl.biz.groups.stubs
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
@@ -17,6 +18,7 @@ class IctrlCommodityProcessor {
     companion object {
         private val BusinessChain: ICorExec<IctrlContext> = rootChain {
             initStatus("Инициализация статуса")
+            initRepo("Инициализация репозитория")
 
             operation("Создание материала", IctrlCommand.CREATE) {
                 stubs("Обработка стабов") {
