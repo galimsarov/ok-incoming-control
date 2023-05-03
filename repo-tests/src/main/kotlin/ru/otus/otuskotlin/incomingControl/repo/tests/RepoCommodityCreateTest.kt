@@ -1,3 +1,5 @@
+package ru.otus.otuskotlin.incomingControl.repo.tests
+
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.otus.otuskotlin.incomingControl.common.models.*
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommodityRequest
@@ -29,7 +31,7 @@ abstract class RepoCommodityCreateTest {
         assertEquals(expected.manufacturer, result.data?.manufacturer)
         assertEquals(expected.receiptQuantity, result.data?.receiptQuantity)
         assertEquals(expected.commodityType, result.data?.commodityType)
-        assertEquals(IctrlCommodityId.NONE, result.data?.id)
+        assertEquals(expected.id, result.data?.id)
         assertEquals(emptyList(), result.errors)
     }
 

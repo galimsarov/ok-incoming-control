@@ -1,3 +1,5 @@
+package ru.otus.otuskotlin.incomingControl.repo.tests
+
 import ru.otus.otuskotlin.incomingControl.common.models.*
 
 abstract class BaseInitCommodities(val op: String) : IInitObjects<IctrlCommodity> {

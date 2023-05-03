@@ -1,3 +1,5 @@
+package ru.otus.otuskotlin.incomingControl.repo.tests
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
