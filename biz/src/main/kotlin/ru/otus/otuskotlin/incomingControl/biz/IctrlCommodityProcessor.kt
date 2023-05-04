@@ -6,12 +6,14 @@ import ru.otus.otuskotlin.incomingControl.biz.general.prepareResult
 import ru.otus.otuskotlin.incomingControl.biz.general.stubs
 import ru.otus.otuskotlin.incomingControl.biz.repo.repoCreate
 import ru.otus.otuskotlin.incomingControl.biz.repo.repoPrepareCreate
+import ru.otus.otuskotlin.incomingControl.biz.repo.repoRead
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
 import ru.otus.otuskotlin.incomingControl.biz.workers.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityId
+import ru.otus.otuskotlin.incomingControl.common.models.IctrlState
 import ru.otus.otuskotlin.incomingControl.cor.ICorExec
 import ru.otus.otuskotlin.incomingControl.cor.chain
 import ru.otus.otuskotlin.incomingControl.cor.rootChain
@@ -74,12 +76,24 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                 }
                 validation {
                     worker("Копируем поля в commodityValidating") { commodityValidating = commodityRequest.deepCopy() }
-                    worker("Очистка id") { commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim()) }
+                    worker("Очистка id") {
+                        commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim())
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
 
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение материала из БД")
+                    worker {
+                        title = "Подготовка ответа для Read"
+                        on { state == IctrlState.RUNNING }
+                        handle { commodityRepoDone = commodityRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Изменить материал", IctrlCommand.UPDATE) {
                 stubs("Обработка стабов") {
