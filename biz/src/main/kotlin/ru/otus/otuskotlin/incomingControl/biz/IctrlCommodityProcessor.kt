@@ -170,10 +170,14 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                     stubNoCase("Ошибка: запрошенный стаб недопустим")
                 }
                 validation {
-                    worker("Копируем поля в adFilterValidating") { commodityFilterValidating = commodityFilterRequest.copy() }
+                    worker("Копируем поля в adFilterValidating") {
+                        commodityFilterValidating = commodityFilterRequest.copy()
+                    }
 
                     finishCommodityFilterValidation("Успешное завершение процедуры валидации")
                 }
+                repoSearch("Поиск материала в БД по фильтру")
+                prepareResult("Подготовка ответа")
             }
         }.build()
     }
