@@ -4,9 +4,7 @@ import ru.otus.otuskotlin.incomingControl.biz.general.initRepo
 import ru.otus.otuskotlin.incomingControl.biz.general.operation
 import ru.otus.otuskotlin.incomingControl.biz.general.prepareResult
 import ru.otus.otuskotlin.incomingControl.biz.general.stubs
-import ru.otus.otuskotlin.incomingControl.biz.repo.repoCreate
-import ru.otus.otuskotlin.incomingControl.biz.repo.repoPrepareCreate
-import ru.otus.otuskotlin.incomingControl.biz.repo.repoRead
+import ru.otus.otuskotlin.incomingControl.biz.repo.*
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
 import ru.otus.otuskotlin.incomingControl.biz.workers.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
@@ -132,8 +130,13 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
 
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
-
-
+                chain {
+                    title = "Логика обновления"
+                    repoRead("Чтение материала из БД")
+                    repoPrepareUpdate("Подготовка объекта для обновления")
+                    repoUpdate("Обновление материала в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Удалить материал", IctrlCommand.DELETE) {
                 stubs("Обработка стабов") {
