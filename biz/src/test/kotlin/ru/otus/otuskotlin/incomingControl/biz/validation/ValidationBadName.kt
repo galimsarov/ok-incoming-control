@@ -1,21 +1,25 @@
-package ru.otus.otuskotlin.incomingControl.biz
+package ru.otus.otuskotlin.incomingControl.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
+private val stub = IctrlCommodityStub.get()
+
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdCorrect(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationNameCorrect(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
         workMode = IctrlWorkMode.TEST,
         commodityRequest = IctrlCommodity(
-            id = IctrlCommodityId("123-234-abc-ABC"),
+            id = stub.id,
             name = "abc",
             description = "abc",
             manufacturer = "def",
@@ -27,17 +31,18 @@ fun validationIdCorrect(command: IctrlCommand, processor: IctrlCommodityProcesso
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(IctrlState.FAILING, ctx.state)
+    assertEquals("abc", ctx.commodityValidated.name)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationNameTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
         workMode = IctrlWorkMode.TEST,
         commodityRequest = IctrlCommodity(
-            id = IctrlCommodityId(" \n\t 123-234-abc-ABC \n\t "),
-            name = "abc",
+            id = stub.id,
+            name = " \n\t abc \t\n ",
             description = "abc",
             manufacturer = "def",
             receiptQuantity = "100",
@@ -48,17 +53,18 @@ fun validationIdTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) 
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(IctrlState.FAILING, ctx.state)
+    assertEquals("abc", ctx.commodityValidated.name)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationNameEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
         workMode = IctrlWorkMode.TEST,
         commodityRequest = IctrlCommodity(
-            id = IctrlCommodityId(""),
-            name = "abc",
+            id = stub.id,
+            name = "",
             description = "abc",
             manufacturer = "def",
             receiptQuantity = "100",
@@ -70,19 +76,19 @@ fun validationIdEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor)
     assertEquals(1, ctx.errors.size)
     assertEquals(IctrlState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("id", error?.field)
-    assertContains(error?.message ?: "", "id")
+    assertEquals("name", error?.field)
+    assertContains(error?.message ?: "", "name")
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationIdFormat(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationNameSymbols(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
         workMode = IctrlWorkMode.TEST,
         commodityRequest = IctrlCommodity(
-            id = IctrlCommodityId("!@#\$%^&*(),.{}"),
-            name = "abc",
+            id = IctrlCommodityId("123"),
+            name = "!@#$%^&*(),.{}",
             description = "abc",
             manufacturer = "def",
             receiptQuantity = "100",
@@ -94,6 +100,6 @@ fun validationIdFormat(command: IctrlCommand, processor: IctrlCommodityProcessor
     assertEquals(1, ctx.errors.size)
     assertEquals(IctrlState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("id", error?.field)
-    assertContains(error?.message ?: "", "id")
+    assertEquals("name", error?.field)
+    assertContains(error?.message ?: "", "name")
 }

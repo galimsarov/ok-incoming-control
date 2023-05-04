@@ -8,6 +8,8 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":stubs"))
     implementation(project(":lib-cor"))
+    implementation(project(":repo-tests"))
+    implementation(project(":repo-stubs"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")

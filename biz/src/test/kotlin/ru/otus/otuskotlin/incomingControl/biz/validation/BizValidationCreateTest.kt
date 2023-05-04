@@ -1,24 +1,27 @@
-package ru.otus.otuskotlin.incomingControl.biz
+package ru.otus.otuskotlin.incomingControl.biz.validation
 
+import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
+import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
+import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoStub
 import kotlin.test.Test
 
-class BizValidationUpdateTest {
-
-    private val command = IctrlCommand.UPDATE
-    private val processor by lazy { IctrlCommodityProcessor() }
+class BizValidationCreateTest {
+    private val command = IctrlCommand.CREATE
+    private val settings by lazy { IctrlCorSettings(repoTest = CommodityRepoStub()) }
+    private val processor by lazy { IctrlCommodityProcessor(settings) }
 
     @Test
     fun correctName() = validationNameCorrect(command, processor)
 
     @Test
-    fun trimTitle() = validationNameTrim(command, processor)
+    fun trimName() = validationNameTrim(command, processor)
 
     @Test
     fun emptyName() = validationNameEmpty(command, processor)
 
     @Test
-    fun badSymbolsTitle() = validationNameSymbols(command, processor)
+    fun badSymbolsName() = validationNameSymbols(command, processor)
 
     @Test
     fun correctDescription() = validationDescriptionCorrect(command, processor)
@@ -55,17 +58,4 @@ class BizValidationUpdateTest {
 
     @Test
     fun badSymbolsQuantity() = validationQuantitySymbols(command, processor)
-
-    @Test
-    fun correctId() = validationIdCorrect(command, processor)
-
-    @Test
-    fun trimId() = validationIdTrim(command, processor)
-
-    @Test
-    fun emptyId() = validationIdEmpty(command, processor)
-
-    @Test
-    fun badFormatId() = validationIdFormat(command, processor)
-
 }

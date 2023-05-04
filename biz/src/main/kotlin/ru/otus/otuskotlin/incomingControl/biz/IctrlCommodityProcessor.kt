@@ -2,18 +2,24 @@ package ru.otus.otuskotlin.incomingControl.biz
 
 import ru.otus.otuskotlin.incomingControl.biz.general.initRepo
 import ru.otus.otuskotlin.incomingControl.biz.general.operation
+import ru.otus.otuskotlin.incomingControl.biz.general.prepareResult
 import ru.otus.otuskotlin.incomingControl.biz.general.stubs
+import ru.otus.otuskotlin.incomingControl.biz.repo.repoCreate
+import ru.otus.otuskotlin.incomingControl.biz.repo.repoPrepareCreate
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
 import ru.otus.otuskotlin.incomingControl.biz.workers.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
+import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityId
 import ru.otus.otuskotlin.incomingControl.cor.ICorExec
+import ru.otus.otuskotlin.incomingControl.cor.chain
 import ru.otus.otuskotlin.incomingControl.cor.rootChain
 import ru.otus.otuskotlin.incomingControl.cor.worker
 
-class IctrlCommodityProcessor {
-    suspend fun exec(ctx: IctrlContext) = BusinessChain.exec(ctx)
+class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorSettings()) {
+    suspend fun exec(ctx: IctrlContext) =
+        BusinessChain.exec(ctx.apply { settings = this@IctrlCommodityProcessor.settings })
 
     companion object {
         private val BusinessChain: ICorExec<IctrlContext> = rootChain {
@@ -52,6 +58,12 @@ class IctrlCommodityProcessor {
 
                     finishCommodityValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание материала в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Получить материал", IctrlCommand.READ) {
                 stubs("Обработка стабов") {

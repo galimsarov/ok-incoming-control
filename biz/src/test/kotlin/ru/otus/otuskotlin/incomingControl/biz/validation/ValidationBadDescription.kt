@@ -1,7 +1,8 @@
-package ru.otus.otuskotlin.incomingControl.biz
+package ru.otus.otuskotlin.incomingControl.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.*
 import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
@@ -12,7 +13,7 @@ import kotlin.test.assertNotEquals
 private val stub = IctrlCommodityStub.get()
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationQuantityCorrect(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationDescriptionCorrect(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
@@ -30,11 +31,11 @@ fun validationQuantityCorrect(command: IctrlCommand, processor: IctrlCommodityPr
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(IctrlState.FAILING, ctx.state)
-    assertEquals("100", ctx.commodityValidated.receiptQuantity)
+    assertEquals("abc", ctx.commodityValidated.description)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationQuantityTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationDescriptionTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
@@ -42,9 +43,9 @@ fun validationQuantityTrim(command: IctrlCommand, processor: IctrlCommodityProce
         commodityRequest = IctrlCommodity(
             id = stub.id,
             name = "abc",
-            description = "abc",
+            description = " \n\tabc \n\t",
             manufacturer = "def",
-            receiptQuantity = " \n\t 100 \t\n ",
+            receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
         ),
@@ -52,11 +53,11 @@ fun validationQuantityTrim(command: IctrlCommand, processor: IctrlCommodityProce
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(IctrlState.FAILING, ctx.state)
-    assertEquals("100", ctx.commodityValidated.receiptQuantity)
+    assertEquals("abc", ctx.commodityValidated.description)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationQuantityEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationDescriptionEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
@@ -64,9 +65,9 @@ fun validationQuantityEmpty(command: IctrlCommand, processor: IctrlCommodityProc
         commodityRequest = IctrlCommodity(
             id = stub.id,
             name = "abc",
-            description = "abc",
+            description = "",
             manufacturer = "def",
-            receiptQuantity = "",
+            receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
         ),
@@ -75,22 +76,22 @@ fun validationQuantityEmpty(command: IctrlCommand, processor: IctrlCommodityProc
     assertEquals(1, ctx.errors.size)
     assertEquals(IctrlState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("receiptQuantity", error?.field)
-    assertContains(error?.message ?: "", "receiptQuantity")
+    assertEquals("description", error?.field)
+    assertContains(error?.message ?: "", "description")
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationQuantitySymbols(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
+fun validationDescriptionSymbols(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
     val ctx = IctrlContext(
         command = command,
         state = IctrlState.NONE,
         workMode = IctrlWorkMode.TEST,
         commodityRequest = IctrlCommodity(
-            id = IctrlCommodityId("123"),
+            id = stub.id,
             name = "abc",
-            description = "abc",
+            description = "!@#$%^&*(),.{}",
             manufacturer = "def",
-            receiptQuantity = "One hundred",
+            receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
         ),
@@ -99,6 +100,6 @@ fun validationQuantitySymbols(command: IctrlCommand, processor: IctrlCommodityPr
     assertEquals(1, ctx.errors.size)
     assertEquals(IctrlState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("receiptQuantity", error?.field)
-    assertContains(error?.message ?: "", "receiptQuantity")
+    assertEquals("description", error?.field)
+    assertContains(error?.message ?: "", "description")
 }

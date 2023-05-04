@@ -1,12 +1,15 @@
-package ru.otus.otuskotlin.incomingControl.biz
+package ru.otus.otuskotlin.incomingControl.biz.validation
 
+import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
+import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
+import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoStub
 import kotlin.test.Test
 
 class BizValidationReadTest {
-
     private val command = IctrlCommand.READ
-    private val processor by lazy { IctrlCommodityProcessor() }
+    private val settings by lazy { IctrlCorSettings(repoTest = CommodityRepoStub()) }
+    private val processor by lazy { IctrlCommodityProcessor(settings) }
 
     @Test
     fun correctId() = validationIdCorrect(command, processor)

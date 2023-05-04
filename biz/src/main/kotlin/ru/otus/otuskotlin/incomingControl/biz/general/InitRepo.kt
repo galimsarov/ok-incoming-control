@@ -17,8 +17,7 @@ fun ICorChainDsl<IctrlContext>.initRepo(title: String) = worker {
             IctrlWorkMode.STUB -> settings.repoStub
             else -> settings.repoProd
         }
-        // в маркетплейсе было так: workMode != IctrlWorkMode.STUB, это ломало тесты на валидацию
-        if (workMode == IctrlWorkMode.PROD && commodityRepo == ICommodityRepository.NONE)
+        if (workMode != IctrlWorkMode.STUB && commodityRepo == ICommodityRepository.NONE)
             fail(
                 errorAdministration(
                     field = "repo",
