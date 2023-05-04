@@ -1,8 +1,8 @@
 package ru.otus.otuskotlin.incomingControl.biz
 
 import ru.otus.otuskotlin.incomingControl.biz.general.initRepo
-import ru.otus.otuskotlin.incomingControl.biz.groups.operation
-import ru.otus.otuskotlin.incomingControl.biz.groups.stubs
+import ru.otus.otuskotlin.incomingControl.biz.general.operation
+import ru.otus.otuskotlin.incomingControl.biz.general.stubs
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
 import ru.otus.otuskotlin.incomingControl.biz.workers.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext

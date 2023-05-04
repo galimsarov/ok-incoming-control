@@ -29,8 +29,8 @@ data class IctrlContext(
     var commodityFilterValidating: IctrlCommodityFilter = IctrlCommodityFilter(),
 
     var commodityValidated: IctrlCommodity = IctrlCommodity(),
-        var commodityFilterValidated: IctrlCommodityFilter = IctrlCommodityFilter(),
+    var commodityFilterValidated: IctrlCommodityFilter = IctrlCommodityFilter(),
 
-        var commodityResponse: IctrlCommodity = IctrlCommodity(),
-        var commoditiesResponse: MutableList<IctrlCommodity> = mutableListOf(),
+    var commodityResponse: IctrlCommodity = IctrlCommodity(),
+    var commoditiesResponse: MutableList<IctrlCommodity> = mutableListOf(),
 )

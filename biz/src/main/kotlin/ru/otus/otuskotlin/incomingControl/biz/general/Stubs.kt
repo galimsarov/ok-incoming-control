@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.incomingControl.biz.groups
+package ru.otus.otuskotlin.incomingControl.biz.general
 
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlState

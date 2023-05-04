@@ -17,13 +17,15 @@ fun ICorChainDsl<IctrlContext>.initRepo(title: String) = worker {
             IctrlWorkMode.STUB -> settings.repoStub
             else -> settings.repoProd
         }
-        if (workMode != IctrlWorkMode.STUB && commodityRepo == ICommodityRepository.NONE) fail(
-            errorAdministration(
-                field = "repo",
-                violationCode = "dbNotConfigured",
-                description = "The database is unconfigured for chosen workmode ($workMode). " +
-                        "Please, contact the administrator staff"
+        // в маркетплейсе было так: workMode != IctrlWorkMode.STUB, это ломало тесты на валидацию
+        if (workMode == IctrlWorkMode.PROD && commodityRepo == ICommodityRepository.NONE)
+            fail(
+                errorAdministration(
+                    field = "repo",
+                    violationCode = "dbNotConfigured",
+                    description = "The database is unconfigured for chosen workmode ($workMode). " +
+                            "Please, contact the administrator staff"
+                )
             )
-        )
     }
 }
