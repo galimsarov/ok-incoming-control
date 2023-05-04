@@ -147,11 +147,20 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                 }
                 validation {
                     worker("Копируем поля в adValidating") { commodityValidating = commodityRequest.deepCopy() }
-                    worker("Очистка id") { commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim()) }
+                    worker("Очистка id") {
+                        commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim())
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика удаления"
+                    repoRead("Чтение материала из БД")
+                    repoPrepareDelete("Подготовка объекта для удаления")
+                    repoDelete("Удаление материала из БД")
+                }
+                prepareResult("Подготовка ответа")
             }
             operation("Поиск материалов", IctrlCommand.SEARCH) {
                 stubs("Обработка стабов") {
