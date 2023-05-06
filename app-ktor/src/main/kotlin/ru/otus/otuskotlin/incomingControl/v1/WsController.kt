@@ -6,6 +6,7 @@ import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
+import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
 import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.incomingControl.api.v1.models.IRequest
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
@@ -15,12 +16,11 @@ import ru.otus.otuskotlin.incomingControl.common.helpers.isUpdatableCommand
 import ru.otus.otuskotlin.incomingControl.mappers.v1.fromTransport
 import ru.otus.otuskotlin.incomingControl.mappers.v1.toTransportCommodity
 import ru.otus.otuskotlin.incomingControl.mappers.v1.toTransportInit
-import ru.otus.otuskotlin.incomingControl.process
 import java.util.*
 
 private val sessions: MutableSet<WebSocketSession> = Collections.synchronizedSet(LinkedHashSet())
 
-suspend fun WebSocketSession.wsHandlerV1() {
+suspend fun WebSocketSession.wsHandlerV1(appSettings: IctrlAppSettings) {
     sessions.add(this)
 
     // Handle init request
@@ -39,7 +39,8 @@ suspend fun WebSocketSession.wsHandlerV1() {
         try {
             val request = apiV1Mapper.readValue<IRequest>(jsonStr)
             context.fromTransport(request)
-            process(ctx)
+            val processor = appSettings.processor
+            processor.exec(ctx)
 
             val result = apiV1Mapper.writeValueAsString(context.toTransportCommodity())
 

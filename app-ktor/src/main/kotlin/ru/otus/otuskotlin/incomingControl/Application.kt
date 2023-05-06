@@ -16,13 +16,14 @@ import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
+import ru.otus.otuskotlin.incomingControl.plugins.initAppSettings
 import ru.otus.otuskotlin.incomingControl.v1.v1Commodity
 import ru.otus.otuskotlin.incomingControl.v1.wsHandlerV1
 
 fun main(args: Array<String>): Unit = main(args)
 
 @Suppress("unused") // Referenced in application.conf
-fun Application.module() {
+fun Application.module(appSettings: IctrlAppSettings = initAppSettings()) {
     install(CachingHeaders)
     install(DefaultHeaders)
     install(AutoHeadResponse)
@@ -54,11 +55,11 @@ fun Application.module() {
         }
 
         route("v1") {
-            v1Commodity()
+            v1Commodity(appSettings)
         }
 
         webSocket("/ws/v1") {
-            wsHandlerV1()
+            wsHandlerV1(appSettings)
         }
     }
 }
