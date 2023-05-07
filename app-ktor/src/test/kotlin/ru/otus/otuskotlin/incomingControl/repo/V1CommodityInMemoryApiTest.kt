@@ -7,6 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
@@ -36,9 +37,8 @@ class V1CommodityInMemoryApiTest {
     @Test
     fun create() = testApplication {
         val repo = CommodityRepoInMemory(initObjects = listOf(initCommodity), randomUuid = { uuidNew })
-        application {
-            module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo)))
-        }
+        application { module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo))) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val createCommodity = CommodityCreateObject(
