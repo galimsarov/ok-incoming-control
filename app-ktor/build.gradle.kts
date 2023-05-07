@@ -23,6 +23,8 @@ dependencies {
     implementation(project(":biz"))
     implementation(project(":repo-in-memory"))
     implementation(project(":repo-stubs"))
+    implementation(project(":stubs"))
+
 
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
