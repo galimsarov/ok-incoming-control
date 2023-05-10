@@ -50,6 +50,7 @@ fun repoNotFoundTest(command: IctrlCommand) = runTest {
             receiptQuantity = "234",
             commodityType = IctrlCommodityType.TUBE_LINE_PART,
             visibility = IctrlVisibility.VISIBLE_TO_GROUP,
+            lock = IctrlCommodityLock("123-234-abc-ABC")
         ),
     )
     processor.exec(ctx)

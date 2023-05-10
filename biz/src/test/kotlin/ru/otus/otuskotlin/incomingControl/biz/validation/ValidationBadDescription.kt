@@ -26,6 +26,7 @@ fun validationDescriptionCorrect(command: IctrlCommand, processor: IctrlCommodit
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -48,6 +49,7 @@ fun validationDescriptionTrim(command: IctrlCommand, processor: IctrlCommodityPr
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -70,6 +72,7 @@ fun validationDescriptionEmpty(command: IctrlCommand, processor: IctrlCommodityP
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -94,6 +97,7 @@ fun validationDescriptionSymbols(command: IctrlCommand, processor: IctrlCommodit
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

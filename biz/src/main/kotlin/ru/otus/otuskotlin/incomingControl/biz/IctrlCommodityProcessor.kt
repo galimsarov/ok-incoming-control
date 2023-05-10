@@ -11,6 +11,7 @@ import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommand
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityId
+import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityLock
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlState
 import ru.otus.otuskotlin.incomingControl.cor.ICorExec
 import ru.otus.otuskotlin.incomingControl.cor.chain
@@ -107,6 +108,9 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                     worker("Очистка id") {
                         commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim())
                     }
+                    worker("Очистка lock") {
+                        commodityValidating.lock = IctrlCommodityLock(commodityValidating.lock.asString().trim())
+                    }
                     worker("Очистка наименования") { commodityValidating.name = commodityValidating.name.trim() }
                     worker("Очистка описания") {
                         commodityValidating.description = commodityValidating.description.trim()
@@ -119,6 +123,8 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                     }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateNameNotEmpty("Проверка на непустое наименование")
                     validateNameHasContent("Проверка на наличие содержания в наименовании")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
@@ -150,8 +156,13 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                     worker("Очистка id") {
                         commodityValidating.id = IctrlCommodityId(commodityValidating.id.asString().trim())
                     }
+                    worker("Очистка lock") {
+                        commodityValidating.lock = IctrlCommodityLock(commodityValidating.lock.asString().trim())
+                    }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
                 chain {

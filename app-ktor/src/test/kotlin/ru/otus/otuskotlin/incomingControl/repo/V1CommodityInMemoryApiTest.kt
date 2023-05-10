@@ -14,6 +14,7 @@ import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityId
+import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityLock
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityType
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlVisibility
 import ru.otus.otuskotlin.incomingControl.module
@@ -33,6 +34,7 @@ class V1CommodityInMemoryApiTest {
         receiptQuantity = "123"
         commodityType = IctrlCommodityType.FASTENER_PART
         visibility = IctrlVisibility.VISIBLE_PUBLIC
+        lock = IctrlCommodityLock(uuidOld)
     }
 
     @Test
@@ -107,6 +109,7 @@ class V1CommodityInMemoryApiTest {
             receiptQuantity = "123",
             commodityType = CommodityType.FASTENER_PART,
             visibility = CommodityVisibility.PUBLIC,
+            lock = initCommodity.lock.asString(),
         )
 
         val response = client.post("/v1/commodity/update") {
@@ -139,7 +142,7 @@ class V1CommodityInMemoryApiTest {
         val response = client.post("/v1/commodity/delete") {
             val requestObj = CommodityDeleteRequest(
                 requestId = "12345",
-                commodity = CommodityDeleteObject(id = uuidOld),
+                commodity = CommodityDeleteObject(id = uuidOld, lock = initCommodity.lock.asString()),
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
             contentType(ContentType.Application.Json)

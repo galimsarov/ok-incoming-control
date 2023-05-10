@@ -4,5 +4,6 @@ import ru.otus.otuskotlin.incomingControl.common.repo.ICommodityRepository
 import ru.otus.otuskotlin.incomingControl.repo.tests.RepoCommodityUpdateTest
 
 class CommodityRepoInMemoryUpdateTest : RepoCommodityUpdateTest() {
-    override val repo: ICommodityRepository = CommodityRepoInMemory(initObjects = initObjects)
+    override val repo: ICommodityRepository =
+        CommodityRepoInMemory(initObjects = initObjects, randomUuid = { lockNew.asString() })
 }

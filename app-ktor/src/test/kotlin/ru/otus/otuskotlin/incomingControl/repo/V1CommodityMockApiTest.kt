@@ -14,6 +14,7 @@ import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodity
+import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityLock
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommoditiesResponse
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommodityResponse
 import ru.otus.otuskotlin.incomingControl.module
@@ -104,7 +105,7 @@ class V1CommodityMockApiTest {
             invokeReadCommodity = {
                 DbCommodityResponse(
                     isSuccess = true,
-                    data = IctrlCommodity(id = it.id, ownerId = userId)
+                    data = IctrlCommodity(id = it.id, ownerId = userId, lock = IctrlCommodityLock("123"))
                 )
             },
             invokeUpdateCommodity = {

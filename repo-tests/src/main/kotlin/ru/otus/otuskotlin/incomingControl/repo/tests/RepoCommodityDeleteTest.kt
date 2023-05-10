@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.incomingControl.repo.tests
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodity
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityId
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommodityIdRequest
@@ -15,7 +16,7 @@ abstract class RepoCommodityDeleteTest {
 
     @Test
     fun deleteSuccess() = runRepoTest {
-        val result = repo.deleteCommodity(DbCommodityIdRequest(deleteSucc.id))
+        val result = repo.deleteCommodity(DbCommodityIdRequest(id = deleteSucc.id, lock = lockOld))
 
         assertEquals(true, result.isSuccess)
         assertEquals(emptyList(), result.errors)
@@ -31,11 +32,22 @@ abstract class RepoCommodityDeleteTest {
         assertEquals("id", error?.field)
     }
 
+    @Test
+    fun deleteConcurrency() = runTest {
+        val result = repo.deleteCommodity(DbCommodityIdRequest(concurrencyId, lock = lockBad))
+
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(lockOld, result.data?.lock)
+    }
+
     companion object : BaseInitCommodities("delete") {
         override val initObjects: List<IctrlCommodity> = listOf(
             createInitTestModel("delete"),
             createInitTestModel("deleteLock"),
         )
         val notFoundId = IctrlCommodityId("ad-repo-delete-notFound")
+        val concurrencyId = IctrlCommodityId(initObjects[1].id.asString())
     }
 }

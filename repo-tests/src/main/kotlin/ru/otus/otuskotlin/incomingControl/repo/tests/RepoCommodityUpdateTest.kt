@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.incomingControl.repo.tests
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.incomingControl.common.models.*
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommodityRequest
 import ru.otus.otuskotlin.incomingControl.common.repo.ICommodityRepository
@@ -11,7 +12,10 @@ import kotlin.test.assertEquals
 abstract class RepoCommodityUpdateTest {
     abstract val repo: ICommodityRepository
     protected open val updateSucc = initObjects[0]
+    protected val updateConc = initObjects[1]
     private val updateIdNotFound = IctrlCommodityId("ad-repo-update-not-found")
+    protected val lockBad = IctrlCommodityLock("20000000-0000-0000-0000-000000000009")
+    protected val lockNew = IctrlCommodityLock("20000000-0000-0000-0000-000000000002")
 
     private val reqUpdateSucc by lazy {
         IctrlCommodity(
@@ -23,6 +27,7 @@ abstract class RepoCommodityUpdateTest {
             commodityType = IctrlCommodityType.FASTENER_PART,
             ownerId = IctrlUserId("owner-123"),
             visibility = IctrlVisibility.VISIBLE_TO_GROUP,
+            lock = initObjects.first().lock,
         )
     }
     private val reqUpdateNotFound = IctrlCommodity(
@@ -34,6 +39,18 @@ abstract class RepoCommodityUpdateTest {
         commodityType = IctrlCommodityType.FASTENER_PART,
         ownerId = IctrlUserId("owner-123"),
         visibility = IctrlVisibility.VISIBLE_TO_GROUP,
+        lock = initObjects.first().lock,
+    )
+    private val reqUpdateConc = IctrlCommodity(
+        id = updateConc.id,
+        name = "update object not found",
+        description = "update object not found description",
+        manufacturer = "update object not found manufacturer",
+        receiptQuantity = "123",
+        commodityType = IctrlCommodityType.FASTENER_PART,
+        ownerId = IctrlUserId("owner-123"),
+        visibility = IctrlVisibility.VISIBLE_TO_GROUP,
+        lock = lockBad,
     )
 
     @Test
@@ -56,6 +73,15 @@ abstract class RepoCommodityUpdateTest {
         assertEquals(null, result.data)
         val error = result.errors.find { it.code == "not-found" }
         assertEquals("id", error?.field)
+    }
+
+    @Test
+    fun updateConcurrencyError() = runTest {
+        val result = repo.updateCommodity(DbCommodityRequest(reqUpdateConc))
+        assertEquals(false, result.isSuccess)
+        val error = result.errors.find { it.code == "concurrency" }
+        assertEquals("lock", error?.field)
+        assertEquals(updateConc, result.data)
     }
 
     companion object : BaseInitCommodities("update") {

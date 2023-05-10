@@ -57,6 +57,7 @@ class BizRepoUpdateTest {
             receiptQuantity = "123",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_TO_GROUP,
+            lock = IctrlCommodityLock("123-234-abc-ABC")
         )
         val ctx = IctrlContext(
             command = command,

@@ -1,6 +1,8 @@
 package ru.otus.otuskotlin.incomingControl.common.helpers
 
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
+import ru.otus.otuskotlin.incomingControl.common.exceptions.RepoConcurrencyException
+import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityLock
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlError
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlState
 
@@ -55,4 +57,16 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: IctrlCommodityLock,
+    actualLock: IctrlCommodityLock?,
+    exception: Exception? = null,
+) = IctrlError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

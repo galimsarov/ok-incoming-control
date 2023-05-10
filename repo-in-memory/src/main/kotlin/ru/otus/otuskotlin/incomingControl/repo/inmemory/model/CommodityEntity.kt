@@ -11,6 +11,7 @@ data class CommodityEntity(
     val commodityType: String? = null,
     val ownerId: String? = null,
     val visibility: String? = null,
+    val lock: String? = null,
 ) {
     constructor(model: IctrlCommodity) : this(
         id = model.id.asString().takeIf { it.isNotBlank() },
@@ -20,7 +21,8 @@ data class CommodityEntity(
         receiptQuantity = model.receiptQuantity.takeIf { it.isNotBlank() },
         commodityType = model.commodityType.takeIf { it != IctrlCommodityType.NONE }?.name,
         ownerId = model.ownerId.asString().takeIf { it.isNotBlank() },
-        visibility = model.visibility.takeIf { it != IctrlVisibility.NONE }?.name
+        visibility = model.visibility.takeIf { it != IctrlVisibility.NONE }?.name,
+        lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
     fun toInternal() = IctrlCommodity(
@@ -31,6 +33,7 @@ data class CommodityEntity(
         receiptQuantity = receiptQuantity ?: "",
         commodityType = commodityType?.let { IctrlCommodityType.valueOf(it) } ?: IctrlCommodityType.NONE,
         ownerId = ownerId?.let { IctrlUserId(it) } ?: IctrlUserId.NONE,
-        visibility = visibility?.let { IctrlVisibility.valueOf(it) } ?: IctrlVisibility.NONE
+        visibility = visibility?.let { IctrlVisibility.valueOf(it) } ?: IctrlVisibility.NONE,
+        lock = lock?.let { IctrlCommodityLock(it) } ?: IctrlCommodityLock.NONE,
     )
 }

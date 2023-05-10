@@ -44,7 +44,8 @@ class BizRepoDeleteTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun repoDeleteSuccessTest() = runTest {
-        val commodityToDelete = IctrlCommodity(id = IctrlCommodityId("123"))
+        val commodityToDelete =
+            IctrlCommodity(id = IctrlCommodityId("123"), lock = IctrlCommodityLock("123-234-abc-ABC"))
         val ctx = IctrlContext(
             command = command,
             state = IctrlState.NONE,

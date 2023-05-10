@@ -23,6 +23,7 @@ fun validationIdCorrect(command: IctrlCommand, processor: IctrlCommodityProcesso
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -44,6 +45,7 @@ fun validationIdTrim(command: IctrlCommand, processor: IctrlCommodityProcessor) 
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -65,6 +67,7 @@ fun validationIdEmpty(command: IctrlCommand, processor: IctrlCommodityProcessor)
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -89,6 +92,7 @@ fun validationIdFormat(command: IctrlCommand, processor: IctrlCommodityProcessor
             receiptQuantity = "100",
             commodityType = IctrlCommodityType.FASTENER_PART,
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
+            lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
