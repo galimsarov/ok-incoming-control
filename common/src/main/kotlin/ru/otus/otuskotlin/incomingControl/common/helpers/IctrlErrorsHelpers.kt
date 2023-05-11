@@ -70,3 +70,7 @@ fun errorRepoConcurrency(
     message = "The object has been changed concurrently by another user or process",
     exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )
+
+val errorNotFound = IctrlError(field = "id", message = "Not Found", code = "not-found")
+
+val errorEmptyId = IctrlError(field = "id", message = "Id must not be null or blank")

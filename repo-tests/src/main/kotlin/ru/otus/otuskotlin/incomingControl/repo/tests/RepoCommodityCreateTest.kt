@@ -11,6 +11,8 @@ import kotlin.test.assertEquals
 abstract class RepoCommodityCreateTest {
     abstract val repo: ICommodityRepository
 
+    protected open val lockNew: IctrlCommodityLock = IctrlCommodityLock("20000000-0000-0000-0000-000000000002")
+
     private val createObj = IctrlCommodity(
         name = "create object",
         description = "create object description",
