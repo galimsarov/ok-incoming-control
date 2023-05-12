@@ -18,6 +18,7 @@ fun ICorChainDsl<IctrlContext>.repoPrepareUpdate(title: String) = worker {
             receiptQuantity = commodityValidated.receiptQuantity
             commodityType = commodityValidated.commodityType
             visibility = commodityValidated.visibility
+            lock = commodityValidated.lock // Добавил для демонстрации concurrency error
         }
     }
 }

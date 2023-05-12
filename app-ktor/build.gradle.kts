@@ -25,6 +25,7 @@ dependencies {
     implementation(project(":repo-stubs"))
     implementation(project(":stubs"))
     implementation(project(":repo-tests"))
+    implementation(project(":repo-postgresql"))
 
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
