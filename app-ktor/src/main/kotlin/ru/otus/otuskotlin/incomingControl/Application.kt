@@ -13,16 +13,13 @@ import org.slf4j.event.Level
 import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.incomingControl.plugins.initAppSettings
 import ru.otus.otuskotlin.incomingControl.plugins.initPlugins
-import ru.otus.otuskotlin.incomingControl.repo.sql.SqlProperties
 import ru.otus.otuskotlin.incomingControl.v1.v1Commodity
 import ru.otus.otuskotlin.incomingControl.v1.wsHandlerV1
 
 fun main(args: Array<String>): Unit = main(args)
 
 @Suppress("unused") // Referenced in application.yaml
-fun Application.module() {
-    val sqlProperties = environment.getSqlProperties()
-    val appSettings: IctrlAppSettings = initAppSettings(sqlProperties)
+fun Application.module(appSettings: IctrlAppSettings = initAppSettings()) {
     initPlugins(appSettings)
 
     install(CallLogging) { level = Level.INFO }
@@ -48,11 +45,3 @@ fun Application.module() {
         }
     }
 }
-
-private fun ApplicationEnvironment.getSqlProperties() = SqlProperties(
-    url = config.property("sql.url").getString(),
-    user = config.property("sql.user").getString(),
-    password = config.property("sql.password").getString(),
-    schema = config.property("sql.schema").getString(),
-    dropDatabase = config.property("sql.drop-database").getString().toBoolean(),
-)

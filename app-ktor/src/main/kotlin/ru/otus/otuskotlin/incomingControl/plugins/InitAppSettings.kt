@@ -4,15 +4,12 @@ import io.ktor.server.application.*
 import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
 import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
-import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoInMemory
 import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoStub
-import ru.otus.otuskotlin.incomingControl.repo.sql.CommodityRepoSQL
-import ru.otus.otuskotlin.incomingControl.repo.sql.SqlProperties
 
-fun Application.initAppSettings(sqlProperties: SqlProperties): IctrlAppSettings {
+fun Application.initAppSettings(): IctrlAppSettings {
     val corSettings = IctrlCorSettings(
-        repoTest = CommodityRepoInMemory(),
-        repoProd = CommodityRepoSQL(sqlProperties),
+        repoTest = getDatabaseConf(CommodityDbType.TEST),
+        repoProd = getDatabaseConf(CommodityDbType.PROD),
         repoStub = CommodityRepoStub(),
     )
     return IctrlAppSettings(
