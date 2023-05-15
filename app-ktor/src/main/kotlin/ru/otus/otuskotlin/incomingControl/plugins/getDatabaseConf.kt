@@ -2,21 +2,45 @@ package ru.otus.otuskotlin.incomingControl.plugins
 
 import io.ktor.server.application.*
 import ru.otus.otuskotlin.incomingControl.common.repo.ICommodityRepository
+import ru.otus.otuskotlin.incomingControl.configs.ConfigPaths
+import ru.otus.otuskotlin.incomingControl.configs.PostgresConfig
 import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoInMemory
 import ru.otus.otuskotlin.incomingControl.repo.sql.CommodityRepoSQL
 import ru.otus.otuskotlin.incomingControl.repo.sql.SqlProperties
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
-fun Application.getDatabaseConf(type: CommodityDbType): ICommodityRepository = when (type) {
-    CommodityDbType.PROD -> CommodityRepoSQL(environment.getSqlProperties())
-    CommodityDbType.TEST -> CommodityRepoInMemory()
+fun Application.getDatabaseConf(type: CommodityDbType): ICommodityRepository {
+    val dbSettingPath = "${ConfigPaths.repository}.${type.confName}"
+    val dbSetting = environment.config.propertyOrNull(dbSettingPath)?.getString()?.lowercase()
+    return when (dbSetting) {
+        "in-memory", "inmemory", "memory", "mem" -> initInMemory()
+        "postgres", "postgresql", "pg", "sql", "psql" -> initPostgres()
+        else -> throw IllegalArgumentException(
+            "$dbSettingPath must be set in application.conf to one of: 'inmemory', 'postgres'"
+        )
+    }
 }
 
-enum class CommodityDbType { PROD, TEST }
+enum class CommodityDbType(val confName: String) {
+    PROD("prod"), TEST("test")
+}
 
-private fun ApplicationEnvironment.getSqlProperties() = SqlProperties(
-    url = config.property("sql.url").getString(),
-    user = config.property("sql.user").getString(),
-    password = config.property("sql.password").getString(),
-    schema = config.property("sql.schema").getString(),
-    dropDatabase = config.property("sql.drop-database").getString().toBoolean(),
-)
+private fun Application.initInMemory(): ICommodityRepository {
+    val ttlSetting = environment.config.propertyOrNull("db.prod")?.getString()?.let {
+        Duration.parse(it)
+    }
+    return CommodityRepoInMemory(ttl = ttlSetting ?: 10.minutes)
+}
+
+private fun Application.initPostgres(): ICommodityRepository {
+    val config = PostgresConfig(environment.config)
+    return CommodityRepoSQL(
+        properties = SqlProperties(
+            url = config.url,
+            user = config.user,
+            password = config.password,
+            schema = config.schema,
+        )
+    )
+}

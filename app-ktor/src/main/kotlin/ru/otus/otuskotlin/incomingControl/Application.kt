@@ -18,7 +18,7 @@ import ru.otus.otuskotlin.incomingControl.v1.wsHandlerV1
 
 fun main(args: Array<String>): Unit = main(args)
 
-@Suppress("unused") // Referenced in application.yaml
+@Suppress("unused")
 fun Application.module(appSettings: IctrlAppSettings = initAppSettings()) {
     initPlugins(appSettings)
 
