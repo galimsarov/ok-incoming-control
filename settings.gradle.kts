@@ -30,3 +30,8 @@ include("stubs")
 include("app-ktor")
 include("lib-cor")
 include("biz")
+
+include("repo-tests")
+include("repo-in-memory")
+include("repo-stubs")
+include("repo-postgresql")

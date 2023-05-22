@@ -1,11 +1,14 @@
 package ru.otus.otuskotlin.incomingControl.stubs
 
 import io.ktor.client.plugins.websocket.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.withTimeout
 import ru.otus.otuskotlin.incomingControl.api.v1.apiV1Mapper
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.helpers.testSettings
+import ru.otus.otuskotlin.incomingControl.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -110,6 +113,8 @@ class V1WebsocketStubTest {
         request: Any,
         crossinline assertBlock: (T) -> Unit
     ) = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = createClient {
             install(WebSockets)
         }

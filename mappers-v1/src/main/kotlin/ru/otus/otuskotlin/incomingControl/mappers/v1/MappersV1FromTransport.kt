@@ -16,7 +16,7 @@ fun IctrlContext.fromTransport(request: IRequest) = when (request) {
 }
 
 private fun String?.toCommodityId() = this?.let { IctrlCommodityId(it) } ?: IctrlCommodityId.NONE
-private fun String?.toCommodityWithId() = IctrlCommodity(id = this.toCommodityId())
+private fun String?.toCommodityLock() = this?.let { IctrlCommodityLock(it) } ?: IctrlCommodityLock.NONE
 private fun IRequest?.requestId() = this?.requestId?.let { IctrlRequestId(it) } ?: IctrlRequestId.NONE
 
 private fun CommodityDebug?.transportToWorkMode(): IctrlWorkMode = when (this?.mode) {
@@ -49,7 +49,7 @@ fun IctrlContext.fromTransport(request: CommodityCreateRequest) {
 fun IctrlContext.fromTransport(request: CommodityReadRequest) {
     command = IctrlCommand.READ
     requestId = request.requestId()
-    commodityRequest = request.commodity?.id.toCommodityWithId()
+    commodityRequest = request.commodity.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -65,7 +65,7 @@ fun IctrlContext.fromTransport(request: CommodityUpdateRequest) {
 fun IctrlContext.fromTransport(request: CommodityDeleteRequest) {
     command = IctrlCommand.DELETE
     requestId = request.requestId()
-    commodityRequest = request.commodity?.id.toCommodityWithId()
+    commodityRequest = request.commodity.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -91,6 +91,12 @@ private fun CommodityCreateObject.toInternal(): IctrlCommodity = IctrlCommodity(
     visibility = this.visibility.fromTransport(),
 )
 
+private fun CommodityReadObject?.toInternal(): IctrlCommodity = if (this != null) {
+    IctrlCommodity(id = id.toCommodityId())
+} else {
+    IctrlCommodity.NONE
+}
+
 private fun CommodityUpdateObject.toInternal(): IctrlCommodity = IctrlCommodity(
     id = this.id.toCommodityId(),
     name = this.name ?: "",
@@ -99,7 +105,14 @@ private fun CommodityUpdateObject.toInternal(): IctrlCommodity = IctrlCommodity(
     receiptQuantity = this.receiptQuantity ?: "",
     commodityType = this.commodityType.fromTransport(),
     visibility = this.visibility.fromTransport(),
+    lock = this.lock.toCommodityLock()
 )
+
+private fun CommodityDeleteObject?.toInternal(): IctrlCommodity = if (this != null) {
+    IctrlCommodity(id = id.toCommodityId(), lock = lock.toCommodityLock())
+} else {
+    IctrlCommodity.NONE
+}
 
 private fun CommodityVisibility?.fromTransport(): IctrlVisibility = when (this) {
     CommodityVisibility.PUBLIC -> IctrlVisibility.VISIBLE_PUBLIC

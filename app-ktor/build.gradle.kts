@@ -17,6 +17,16 @@ application {
 }
 
 dependencies {
+    implementation(project(":common"))
+    implementation(project(":api-v1-jackson"))
+    implementation(project(":mappers-v1"))
+    implementation(project(":biz"))
+    implementation(project(":repo-in-memory"))
+    implementation(project(":repo-stubs"))
+    implementation(project(":stubs"))
+    implementation(project(":repo-tests"))
+    implementation(project(":repo-postgresql"))
+
     implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
     implementation(ktor("netty")) // "io.ktor:ktor-ktor-server-netty:$ktorVersion"
 
@@ -39,17 +49,6 @@ dependencies {
     implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-
-    // transport models
-    implementation(project(":common"))
-
-    // v1 api
-    implementation(project(":api-v1-jackson"))
-    implementation(project(":mappers-v1"))
-
-    // Stubs
-    // implementation(project(":stubs"))
-    implementation(project(":biz"))
 
     // tests
     testImplementation(kotlin("test-junit"))

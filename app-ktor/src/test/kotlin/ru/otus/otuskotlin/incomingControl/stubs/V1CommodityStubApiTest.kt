@@ -7,14 +7,19 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.helpers.testSettings
+import ru.otus.otuskotlin.incomingControl.module
 import kotlin.test.assertEquals
 
 class V1CommodityStubApiTest {
     @Test
     fun create() = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val response = client.post("/v1/commodity/create") {
@@ -44,6 +49,8 @@ class V1CommodityStubApiTest {
 
     @Test
     fun read() = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val response = client.post("/v1/commodity/read") {
@@ -65,6 +72,8 @@ class V1CommodityStubApiTest {
 
     @Test
     fun update() = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val response = client.post("/v1/commodity/update") {
@@ -94,6 +103,8 @@ class V1CommodityStubApiTest {
 
     @Test
     fun delete() = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val response = client.post("/v1/commodity/delete") {
@@ -115,6 +126,8 @@ class V1CommodityStubApiTest {
 
     @Test
     fun search() = testApplication {
+        application { module(testSettings()) }
+        environment { config = MapApplicationConfig() }
         val client = myClient()
 
         val response = client.post("/v1/commodity/search") {

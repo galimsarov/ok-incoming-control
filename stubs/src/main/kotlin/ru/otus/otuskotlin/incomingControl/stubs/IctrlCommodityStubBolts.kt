@@ -7,7 +7,7 @@ object IctrlCommodityStubBolts {
         id = IctrlCommodityId("123"),
         name = "Болт",
         description = "Болт 100x5",
-        manufacturer = "Кунгурский завот металлоизделий",
+        manufacturer = "Кунгурский завод металлоизделий",
         receiptQuantity = "1000",
         commodityType = IctrlCommodityType.FASTENER_PART,
         ownerId = IctrlUserId("user-1"),

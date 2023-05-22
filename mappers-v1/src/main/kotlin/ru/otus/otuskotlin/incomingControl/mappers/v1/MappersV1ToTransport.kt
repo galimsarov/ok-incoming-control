@@ -70,6 +70,7 @@ private fun IctrlCommodity.toTransportCommodity(): CommodityResponseObject = Com
     commodityType = commodityType.toTransportCommodity(),
     visibility = visibility.toTransportCommodity(),
     permissions = permissionsClient.toTransportCommodity(),
+    lock = lock.takeIf { it != IctrlCommodityLock.NONE }?.asString()
 )
 
 private fun Set<IctrlCommodityPermissionClient>.toTransportCommodity(): Set<CommodityPermissions>? = this
