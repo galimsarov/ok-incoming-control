@@ -11,6 +11,8 @@ import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.auth.addAuth
+import ru.otus.otuskotlin.incomingControl.base.KtorAuthConfig
 import ru.otus.otuskotlin.incomingControl.helpers.testSettings
 import ru.otus.otuskotlin.incomingControl.module
 import kotlin.test.assertEquals
@@ -38,6 +40,7 @@ class V1CommodityStubApiTest {
                     stub = CommodityRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -62,6 +65,7 @@ class V1CommodityStubApiTest {
                     stub = CommodityRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -93,6 +97,7 @@ class V1CommodityStubApiTest {
                     stub = CommodityRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -116,6 +121,7 @@ class V1CommodityStubApiTest {
                     stub = CommodityRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -139,6 +145,7 @@ class V1CommodityStubApiTest {
                     stub = CommodityRequestDebugStubs.SUCCESS
                 )
             )
+            addAuth(config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }

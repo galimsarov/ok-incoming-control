@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.incomingControl.helpers
 
 import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
+import ru.otus.otuskotlin.incomingControl.base.KtorAuthConfig
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.repo.ICommodityRepository
 import ru.otus.otuskotlin.incomingControl.repo.inmemory.CommodityRepoInMemory
@@ -11,5 +12,6 @@ fun testSettings(repo: ICommodityRepository? = null) = IctrlAppSettings(
         repoStub = CommodityRepoStub(),
         repoTest = repo ?: CommodityRepoInMemory(),
         repoProd = repo ?: CommodityRepoInMemory(),
-    )
+    ),
+    auth = KtorAuthConfig.TEST
 )

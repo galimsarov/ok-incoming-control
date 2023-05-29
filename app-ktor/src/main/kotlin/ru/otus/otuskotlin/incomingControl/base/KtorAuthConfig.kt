@@ -17,10 +17,10 @@ data class KtorAuthConfig(
 
         val TEST = KtorAuthConfig(
             secret = "secret",
-            issuer = "OtusKotlin",
+            issuer = "incoming-control",
             audience = "ad-users",
-            realm = "otus-marketplace",
-            clientId = "otus-marketplace-service",
+            realm = "incoming-control",
+            clientId = "incoming-control",
         )
 
         val NONE = KtorAuthConfig(
