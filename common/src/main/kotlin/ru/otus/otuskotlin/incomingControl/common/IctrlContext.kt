@@ -2,6 +2,8 @@ package ru.otus.otuskotlin.incomingControl.common
 
 import kotlinx.datetime.Instant
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlPrincipalModel
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlUserPermissions
 import ru.otus.otuskotlin.incomingControl.common.repo.ICommodityRepository
 import ru.otus.otuskotlin.incomingControl.common.stubs.IctrlStubs
 
@@ -13,6 +15,10 @@ data class IctrlContext(
 
     var workMode: IctrlWorkMode = IctrlWorkMode.PROD,
     var stubCase: IctrlStubs = IctrlStubs.NONE,
+
+    var principal: IctrlPrincipalModel = IctrlPrincipalModel.NONE,
+    val permissionsChain: MutableSet<IctrlUserPermissions> = mutableSetOf(),
+    var permitted: Boolean = false,
 
     var commodityRepo: ICommodityRepository = ICommodityRepository.NONE,
     var commodityRepoRead: IctrlCommodity = IctrlCommodity(),
