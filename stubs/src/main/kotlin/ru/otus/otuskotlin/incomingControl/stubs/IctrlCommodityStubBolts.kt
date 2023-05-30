@@ -1,6 +1,7 @@
 package ru.otus.otuskotlin.incomingControl.stubs
 
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlCommodityPermissionClient
 
 object IctrlCommodityStubBolts {
     val COMMODITY_BOLT = IctrlCommodity(

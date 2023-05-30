@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":lib-cor"))
     implementation(project(":repo-tests"))
     implementation(project(":repo-stubs"))
+    implementation(project(":auth"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")

@@ -19,7 +19,4 @@ enum class IctrlUserPermissions {
     SEARCH_OWN,
     SEARCH_PUBLIC,
     SEARCH_REGISTERED,
-    SEARCH_DRAFTS,
-
-    OFFER_FOR_OWN,
 }
