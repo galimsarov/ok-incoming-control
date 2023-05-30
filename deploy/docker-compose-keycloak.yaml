@@ -15,4 +15,4 @@ services:
     environment:
       KEYCLOAK_USER: otus
       KEYCLOAK_PASSWORD: otus
-#      KEYCLOAK_IMPORT: "/tmp/realm-export.json"
+      KEYCLOAK_IMPORT: "/tmp/realm-export.json"
