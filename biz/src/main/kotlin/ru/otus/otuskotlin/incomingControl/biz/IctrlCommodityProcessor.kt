@@ -4,6 +4,10 @@ import ru.otus.otuskotlin.incomingControl.biz.general.initRepo
 import ru.otus.otuskotlin.incomingControl.biz.general.operation
 import ru.otus.otuskotlin.incomingControl.biz.general.prepareResult
 import ru.otus.otuskotlin.incomingControl.biz.general.stubs
+import ru.otus.otuskotlin.incomingControl.biz.permissions.accessValidation
+import ru.otus.otuskotlin.incomingControl.biz.permissions.chainPermissions
+import ru.otus.otuskotlin.incomingControl.biz.permissions.frontPermissions
+import ru.otus.otuskotlin.incomingControl.biz.permissions.searchTypes
 import ru.otus.otuskotlin.incomingControl.biz.repo.*
 import ru.otus.otuskotlin.incomingControl.biz.validation.*
 import ru.otus.otuskotlin.incomingControl.biz.workers.*
@@ -59,11 +63,14 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
 
                     finishCommodityValidation("Завершение проверок")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика сохранения"
                     repoPrepareCreate("Подготовка объекта для сохранения")
+                    accessValidation("Вычисление прав доступа")
                     repoCreate("Создание материала в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Получить материал", IctrlCommand.READ) {
@@ -83,15 +90,18 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
 
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика чтения"
                     repoRead("Чтение материала из БД")
+                    accessValidation("Вычисление прав доступа")
                     worker {
                         title = "Подготовка ответа для Read"
                         on { state == IctrlState.RUNNING }
                         handle { commodityRepoDone = commodityRepoRead }
                     }
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Изменить материал", IctrlCommand.UPDATE) {
@@ -136,12 +146,15 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
 
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика обновления"
                     repoRead("Чтение материала из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareUpdate("Подготовка объекта для обновления")
                     repoUpdate("Обновление материала в БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Удалить материал", IctrlCommand.DELETE) {
@@ -165,12 +178,15 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
                     validateLockProperFormat("Проверка формата lock")
                     finishCommodityValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
                 chain {
                     title = "Логика удаления"
                     repoRead("Чтение материала из БД")
+                    accessValidation("Вычисление прав доступа")
                     repoPrepareDelete("Подготовка объекта для удаления")
                     repoDelete("Удаление материала из БД")
                 }
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
             operation("Поиск материалов", IctrlCommand.SEARCH) {
@@ -187,7 +203,11 @@ class IctrlCommodityProcessor(private val settings: IctrlCorSettings = IctrlCorS
 
                     finishCommodityFilterValidation("Успешное завершение процедуры валидации")
                 }
+                chainPermissions("Вычисление разрешений для пользователя")
+                searchTypes("Подготовка поискового запроса")
+
                 repoSearch("Поиск материала в БД по фильтру")
+                frontPermissions("Вычисление пользовательских разрешений для фронтенда")
                 prepareResult("Подготовка ответа")
             }
         }.build()

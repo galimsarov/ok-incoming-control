@@ -11,7 +11,7 @@ fun ICorChainDsl<IctrlContext>.repoPrepareCreate(title: String) = worker {
     on { state == IctrlState.RUNNING }
     handle {
         commodityRepoRead = commodityValidated.deepCopy()
+        commodityRepoRead.ownerId = principal.id
         commodityRepoPrepare = commodityRepoRead
-
     }
 }

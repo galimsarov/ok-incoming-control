@@ -5,9 +5,14 @@ import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlPrincipalModel
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlUserGroups
+import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+
+private val stub = IctrlCommodityStub.prepareResult { id = IctrlCommodityId("123-234-abc-ABC") }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun validationLockCorrect(command: IctrlCommand, processor: IctrlCommodityProcessor) = runTest {
@@ -25,6 +30,7 @@ fun validationLockCorrect(command: IctrlCommand, processor: IctrlCommodityProces
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
             lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
+        principal = IctrlPrincipalModel(id = stub.ownerId, groups = setOf(IctrlUserGroups.USER, IctrlUserGroups.TEST))
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -47,6 +53,7 @@ fun validationLockTrim(command: IctrlCommand, processor: IctrlCommodityProcessor
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
             lock = IctrlCommodityLock(" \n\t 123-234-abc-ABC \n\t "),
         ),
+        principal = IctrlPrincipalModel(id = stub.ownerId, groups = setOf(IctrlUserGroups.USER, IctrlUserGroups.TEST))
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)

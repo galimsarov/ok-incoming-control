@@ -12,6 +12,8 @@ import io.ktor.server.testing.*
 import org.junit.Test
 import ru.otus.otuskotlin.incomingControl.IctrlAppSettings
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
+import ru.otus.otuskotlin.incomingControl.auth.addAuth
+import ru.otus.otuskotlin.incomingControl.base.KtorAuthConfig
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodity
 import ru.otus.otuskotlin.incomingControl.common.models.IctrlCommodityLock
@@ -38,7 +40,14 @@ class V1CommodityMockApiTest {
                 )
             }
         )
-        application { module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo))) }
+        application {
+            module(
+                IctrlAppSettings(
+                    corSettings = IctrlCorSettings(repoTest = repo),
+                    auth = KtorAuthConfig.TEST
+                )
+            )
+        }
         environment { config = MapApplicationConfig() }
         val client = myClient()
 
@@ -57,6 +66,7 @@ class V1CommodityMockApiTest {
                 commodity = createCommodity,
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -81,7 +91,14 @@ class V1CommodityMockApiTest {
                 )
             }
         )
-        application { module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo))) }
+        application {
+            module(
+                IctrlAppSettings(
+                    corSettings = IctrlCorSettings(repoTest = repo),
+                    auth = KtorAuthConfig.TEST
+                )
+            )
+        }
         environment { config = MapApplicationConfig() }
         val client = myClient()
 
@@ -91,6 +108,7 @@ class V1CommodityMockApiTest {
                 commodity = CommodityReadObject(commodityId.asString()),
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -115,7 +133,14 @@ class V1CommodityMockApiTest {
                 )
             }
         )
-        application { module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo))) }
+        application {
+            module(
+                IctrlAppSettings(
+                    corSettings = IctrlCorSettings(repoTest = repo),
+                    auth = KtorAuthConfig.TEST
+                )
+            )
+        }
         environment { config = MapApplicationConfig() }
         val client = myClient()
 
@@ -145,6 +170,7 @@ class V1CommodityMockApiTest {
                 ),
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -176,7 +202,7 @@ class V1CommodityMockApiTest {
                     )
                 }
             )
-            module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo)))
+            module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         environment { config = MapApplicationConfig() }
 
@@ -190,6 +216,7 @@ class V1CommodityMockApiTest {
                 commodity = CommodityDeleteObject(id = deleteId, lock = "123"),
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }
@@ -209,7 +236,7 @@ class V1CommodityMockApiTest {
                     )
                 }
             )
-            module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo)))
+            module(IctrlAppSettings(corSettings = IctrlCorSettings(repoTest = repo), auth = KtorAuthConfig.TEST))
         }
         environment { config = MapApplicationConfig() }
         val client = myClient()
@@ -220,6 +247,7 @@ class V1CommodityMockApiTest {
                 commodityFilter = CommoditySearchFilter(),
                 debug = CommodityDebug(mode = CommodityRequestDebugMode.TEST)
             )
+            addAuth(id = userId.asString(), config = KtorAuthConfig.TEST, groups = listOf("USER"))
             contentType(ContentType.Application.Json)
             setBody(requestObj)
         }

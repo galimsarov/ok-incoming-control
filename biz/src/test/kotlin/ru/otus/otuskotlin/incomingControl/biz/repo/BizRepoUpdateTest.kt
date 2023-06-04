@@ -6,6 +6,8 @@ import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.IctrlCorSettings
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlPrincipalModel
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlUserGroups
 import ru.otus.otuskotlin.incomingControl.common.repo.DbCommodityResponse
 import ru.otus.otuskotlin.incomingControl.repo.tests.CommodityRepositoryMock
 import kotlin.test.Test
@@ -64,6 +66,7 @@ class BizRepoUpdateTest {
             state = IctrlState.NONE,
             workMode = IctrlWorkMode.TEST,
             commodityRequest = commodityToUpdate,
+            principal = IctrlPrincipalModel(id = userId, groups = setOf(IctrlUserGroups.USER, IctrlUserGroups.TEST))
         )
         processor.exec(ctx)
         assertEquals(IctrlState.FINISHING, ctx.state)

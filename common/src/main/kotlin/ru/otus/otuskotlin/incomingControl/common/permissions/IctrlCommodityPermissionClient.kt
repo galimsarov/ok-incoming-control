@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.incomingControl.common.models
+package ru.otus.otuskotlin.incomingControl.common.permissions
 
 enum class IctrlCommodityPermissionClient {
     READ,

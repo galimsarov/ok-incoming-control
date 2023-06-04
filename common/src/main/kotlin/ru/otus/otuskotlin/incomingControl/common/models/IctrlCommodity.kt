@@ -1,5 +1,8 @@
 package ru.otus.otuskotlin.incomingControl.common.models
 
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlCommodityPermissionClient
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlPrincipalRelations
+
 data class IctrlCommodity(
     var id: IctrlCommodityId = IctrlCommodityId.NONE,
     var name: String = "",
@@ -11,9 +14,13 @@ data class IctrlCommodity(
     var visibility: IctrlVisibility = IctrlVisibility.NONE,
     var productId: IctrlProductId = IctrlProductId.NONE,
     var lock: IctrlCommodityLock = IctrlCommodityLock.NONE,
-    val permissionsClient: MutableSet<IctrlCommodityPermissionClient> = mutableSetOf()
+    val permissionsClient: MutableSet<IctrlCommodityPermissionClient> = mutableSetOf(),
+    var principalRelations: Set<IctrlPrincipalRelations> = emptySet(),
 ) {
-    fun deepCopy(): IctrlCommodity = copy(permissionsClient = permissionsClient.toMutableSet())
+    fun deepCopy(): IctrlCommodity = copy(
+        principalRelations = principalRelations.toSet(),
+        permissionsClient = permissionsClient.toMutableSet()
+    )
 
     companion object {
         val NONE = IctrlCommodity()

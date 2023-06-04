@@ -5,6 +5,8 @@ import kotlinx.coroutines.test.runTest
 import ru.otus.otuskotlin.incomingControl.biz.IctrlCommodityProcessor
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlPrincipalModel
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlUserGroups
 import ru.otus.otuskotlin.incomingControl.stubs.IctrlCommodityStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
@@ -28,6 +30,7 @@ fun validationDescriptionCorrect(command: IctrlCommand, processor: IctrlCommodit
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
             lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
+        principal = IctrlPrincipalModel(id = stub.ownerId, groups = setOf(IctrlUserGroups.USER, IctrlUserGroups.TEST))
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
@@ -51,6 +54,7 @@ fun validationDescriptionTrim(command: IctrlCommand, processor: IctrlCommodityPr
             visibility = IctrlVisibility.VISIBLE_PUBLIC,
             lock = IctrlCommodityLock("123-234-abc-ABC"),
         ),
+        principal = IctrlPrincipalModel(id = stub.ownerId, groups = setOf(IctrlUserGroups.USER, IctrlUserGroups.TEST))
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)

@@ -3,6 +3,7 @@ package ru.otus.otuskotlin.incomingControl.mappers.v1
 import ru.otus.otuskotlin.incomingControl.api.v1.models.*
 import ru.otus.otuskotlin.incomingControl.common.IctrlContext
 import ru.otus.otuskotlin.incomingControl.common.models.*
+import ru.otus.otuskotlin.incomingControl.common.permissions.IctrlCommodityPermissionClient
 import ru.otus.otuskotlin.incomingControl.mappers.v1.exceptions.UnknownIctrlCommand
 
 fun IctrlContext.toTransportCommodity(): IResponse = when (val cmd = command) {
