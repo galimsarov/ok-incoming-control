@@ -62,7 +62,7 @@ class MapperTest {
                     message = "wrong name",
                 )
             ),
-            state = IctrlState.RUNNING,
+            state = IctrlState.FINISHING,
         )
 
         val req = context.toTransportCommodity() as CommodityCreateResponse

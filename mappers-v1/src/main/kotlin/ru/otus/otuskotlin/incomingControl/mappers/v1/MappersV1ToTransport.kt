@@ -17,35 +17,35 @@ fun IctrlContext.toTransportCommodity(): IResponse = when (val cmd = command) {
 
 fun IctrlContext.toTransportCreate() = CommodityCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == IctrlState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == IctrlState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     commodity = commodityResponse.toTransportCommodity()
 )
 
 fun IctrlContext.toTransportRead() = CommodityReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == IctrlState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == IctrlState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     commodity = commodityResponse.toTransportCommodity()
 )
 
 fun IctrlContext.toTransportUpdate() = CommodityUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == IctrlState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == IctrlState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     commodity = commodityResponse.toTransportCommodity()
 )
 
 fun IctrlContext.toTransportDelete() = CommodityDeleteResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == IctrlState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == IctrlState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     commodity = commodityResponse.toTransportCommodity()
 )
 
 fun IctrlContext.toTransportSearch() = CommoditySearchResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == IctrlState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == IctrlState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     commodities = commoditiesResponse.toTransportCommodity()
 )
