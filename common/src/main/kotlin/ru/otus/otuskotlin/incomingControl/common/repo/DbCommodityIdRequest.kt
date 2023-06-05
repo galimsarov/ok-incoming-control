@@ -8,5 +8,5 @@ data class DbCommodityIdRequest(
     val id: IctrlCommodityId,
     val lock: IctrlCommodityLock = IctrlCommodityLock.NONE,
 ) {
-    constructor(commodity: IctrlCommodity) : this(commodity.id)
+    constructor(commodity: IctrlCommodity) : this(commodity.id, commodity.lock)
 }
